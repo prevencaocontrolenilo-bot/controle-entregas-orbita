@@ -1,6 +1,6 @@
-import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=5.27';
-import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=5.27';
-import * as V from './views.js?v=5.27';
+import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=5.28';
+import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=5.28';
+import * as V from './views.js?v=5.28';
 
 let currentView = 'central';
 let currentRegistryTab = 'vehicles';
@@ -157,7 +157,7 @@ function wireNav() {
 }
 
 async function openOperatorPicker() {
-  const { Collaborators } = await import('./db.js?v=5.27');
+  const { Collaborators } = await import('./db.js?v=5.28');
   const list = (await Collaborators.all()).filter((c) => c.active !== false);
   openModal({
     title: 'Quem está operando agora?',
@@ -430,7 +430,7 @@ async function render() {
 }
 
 async function updateBadges() {
-  const { Deliveries, Cycles } = await import('./db.js?v=5.27');
+  const { Deliveries, Cycles } = await import('./db.js?v=5.28');
   const rows = await Deliveries.active(environment);
   $('#pendingBadge').textContent = rows.filter((r) => r.status === 'na_loja').length;
   const trashed = await Deliveries.trashed(environment);
@@ -453,7 +453,7 @@ if ('serviceWorker' in navigator) {
     refreshingForUpdate = true;
     window.location.reload();
   });
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v5.27-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v5.28-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
 }
 
 boot();
