@@ -4,113 +4,63 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta name="theme-color" content="#102A43" />
-<meta name="description" content="Órbita — centro de comando para controle de entregas, ciclos, frota e resultados." />
-<link rel="manifest" href="manifest.webmanifest?v=7.0" />
-<link rel="stylesheet" href="styles.css?v=7.0" />
-<title>Órbita • Centro de Comando</title>
+<meta name="theme-color" content="#102a43" />
+<meta name="description" content="Órbita — sistema de controle de entregas, ciclos, frota e resultados." />
+<link rel="manifest" href="manifest.webmanifest?v=8.0" />
+<link rel="stylesheet" href="styles.css?v=8.0" />
+<title>Órbita • Controle de Entregas</title>
 </head>
 <body>
   <div id="bootScreen" class="boot-screen">
-    <div class="boot-card">
-      <div class="brand-logo-chip brand-initial" style="padding:14px 18px" aria-label="Órbita">Ó</div>
-      <h1>Órbita</h1><p>Preparando o centro de comando…</p>
-      <div class="boot-bar"><span></span></div>
-    </div>
+    <div class="boot-card"><div class="brand-logo-chip brand-initial">Ó</div><h1>Órbita</h1><p>Preparando o sistema operacional…</p><div class="boot-bar"><span></span></div></div>
   </div>
 
-  <div id="appShell" class="shell new-system hidden">
-    <aside class="sidebar" id="sidebar" aria-label="Navegação principal">
-      <div class="command-brand">
-        <div class="brand-logo-chip brand-initial" aria-label="Órbita">Ó</div>
-        <div><strong>Órbita</strong><span>Centro de comando</span></div>
-        <small class="release-side">v7.0</small>
-      </div>
-      <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" type="button" aria-label="Recolher menu" aria-expanded="true"><span>‹</span><b>Recolher menu</b></button>
+  <div id="appShell" class="app-v8 hidden">
+    <aside id="sidebar" class="nav-rail" aria-label="Navegação principal">
+      <div class="rail-brand"><div class="brand-logo-chip brand-initial">Ó</div><div class="rail-brand-copy"><strong>Órbita</strong><small>controle de entregas</small></div><span class="rail-version">8.0</span></div>
+      <button id="sidebarCollapseBtn" class="rail-toggle" type="button" aria-label="Recolher menu" aria-expanded="true"><span>‹</span><b>Recolher menu</b></button>
 
-      <div class="side-context">
-        <button class="conn-pill" id="envToggleBtn" type="button">
-          <span class="conn-dot online" id="envDot"></span><span id="envPill">● Operação Real</span><b>⌄</b>
-        </button>
-        <div class="conn-pill local-station-pill">
-          <span class="operator-avatar">⌂</span><span>Estação local</span><b>●</b>
-        </div>
-        <div class="conn-pill connection-state"><span class="conn-dot" id="connDot"></span><span id="connLabel">Verificando conexão…</span></div>
+      <div class="rail-status">
+        <button id="envToggleBtn" class="mode-switch" type="button"><span class="conn-dot online" id="envDot"></span><span id="envPill">● Operação Real</span><b>⌄</b></button>
+        <div class="station-chip"><span class="station-icon">⌂</span><span>Estação local</span><i>●</i></div>
+        <div class="connection-state"><span class="conn-dot" id="connDot"></span><span id="connLabel">Verificando conexão…</span></div>
       </div>
 
-      <nav class="main-nav">
-        <p class="nav-group-label">Acompanhar</p>
-        <button class="nav-item active" data-view="central"><span class="ico">⌂</span><span>Centro de comando</span><span class="badge" id="pendingBadge">0</span></button>
-        <button class="nav-item" data-view="dashboard"><span class="ico">◒</span><span>Inteligência</span></button>
-        <button class="nav-item" data-view="search"><span class="ico">⌕</span><span>Localizar entrega</span></button>
-
-        <p class="nav-group-label">Executar</p>
-        <button class="nav-item" data-view="cycles"><span class="ico">⇄</span><span>Ciclos de rota</span><span class="badge" id="cyclesBadge">0</span></button>
-        <button class="nav-item" data-view="km"><span class="ico">⌁</span><span>Frota e KM</span></button>
-        <button class="nav-item" data-view="costs"><span class="ico">$</span><span>Custos</span></button>
-        <button class="nav-item" data-view="reports"><span class="ico">▤</span><span>Relatórios</span></button>
-
-        <p class="nav-group-label">Administrar</p>
-        <button class="nav-item" data-view="registry"><span class="ico">⌘</span><span>Cadastros</span></button>
-        <button class="nav-item" data-view="audit"><span class="ico">✓</span><span>Auditoria</span></button>
-        <button class="nav-item" data-view="trash"><span class="ico">⌫</span><span>Lixeira</span><span class="badge" id="trashBadge">0</span></button>
-        <button class="nav-item" data-view="settings"><span class="ico">⚙</span><span>Preferências</span></button>
+      <nav class="rail-nav">
+        <p class="rail-label">MONITORAR</p>
+        <button class="rail-item active" data-view="central"><span class="rail-icon">⌂</span><span>Centro de comando</span><em id="pendingBadge">0</em></button>
+        <button class="rail-item" data-view="dashboard"><span class="rail-icon">◒</span><span>Central de Inteligência</span></button>
+        <button class="rail-item" data-view="search"><span class="rail-icon">⌕</span><span>Localizar entrega</span></button>
+        <p class="rail-label">EXECUTAR</p>
+        <button class="rail-item" data-view="cycles"><span class="rail-icon">⇄</span><span>Ciclos de rota</span><em id="cyclesBadge">0</em></button>
+        <button class="rail-item" data-view="km"><span class="rail-icon">⌁</span><span>Frota e quilometragem</span></button>
+        <button class="rail-item" data-view="costs"><span class="rail-icon">$</span><span>Custos e financeiro</span></button>
+        <button class="rail-item" data-view="reports"><span class="rail-icon">▤</span><span>Relatórios</span></button>
+        <p class="rail-label">ADMINISTRAR</p>
+        <button class="rail-item" data-view="registry"><span class="rail-icon">⌘</span><span>Cadastros</span></button>
+        <button class="rail-item" data-view="audit"><span class="rail-icon">✓</span><span>Auditoria</span></button>
+        <button class="rail-item" data-view="trash"><span class="rail-icon">⌫</span><span>Lixeira</span><em id="trashBadge">0</em></button>
+        <button class="rail-item" data-view="settings"><span class="rail-icon">⚙</span><span>Preferências</span></button>
       </nav>
-
-      <div class="sidebar-bottom">
-        <button class="mini install-action" id="installBtn" hidden>⇩ Instalar aplicativo</button>
-        <div class="dev-footer"><span>Desenvolvido por André</span><small>com inteligência artificial</small></div>
-      </div>
+      <div class="rail-footer"><button class="mini install-action" id="installBtn" hidden>⇩ Instalar aplicativo</button><div><strong>Desenvolvido por André</strong><small>com inteligência artificial</small></div></div>
     </aside>
+    <div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
 
-    <div class="main">
-      <header class="topbar command-topbar">
-        <div class="topbar-main-row">
-          <div class="topbar-title-wrap">
-            <button class="menu-btn" id="menuBtn" type="button" aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false">☰</button>
-            <div class="breadcrumb"><span>OPERAÇÃO</span><b>›</b><strong id="viewTitle">Centro de comando</strong></div>
-            <div class="topbar-title-block"><p id="viewSubtitle">Visão ao vivo das entregas, ciclos, prazos e pendências da operação.</p></div>
-          </div>
-          <div class="topbar-actions">
-            <div class="live-clock utility-pill" id="liveClock"><span class="pulse-dot"></span><span id="liveClockText">--:--:--</span></div>
-            <span class="release-badge utility-pill">v7.0</span>
-            <span class="monitor-mode-badge hidden" id="monitorModeBadge">👁 SOMENTE LEITURA</span>
-            <button class="btn-primary topbar-cta" id="newDeliveryBtn">＋ Nova entrega</button>
-          </div>
+    <main class="app-main">
+      <header class="app-header">
+        <div class="header-line">
+          <div class="header-context"><button id="menuBtn" class="header-menu" type="button" aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false">☰</button><div><div class="eyebrow">CENTRO DE CONTROLE <span>•</span> OPERAÇÃO</div><h1 id="viewTitle">Centro de comando</h1><p id="viewSubtitle">Visão ao vivo das entregas, ciclos, prazos e pendências da operação.</p></div></div>
+          <div class="header-actions"><div id="liveClock" class="clock-chip"><span class="pulse-dot"></span><span id="liveClockText">--:--:--</span></div><span class="version-chip">v8.0</span><span class="monitor-mode-badge hidden" id="monitorModeBadge">SOMENTE LEITURA</span><button class="btn-primary header-create" id="newDeliveryBtn">＋ Nova entrega</button></div>
         </div>
-        <div class="workspace-nav" aria-label="Atalhos de trabalho">
-          <span class="workspace-nav-label">TRABALHO</span>
-          <button class="workspace-tab active" data-view="central"><span>01</span>Comando</button>
-          <button class="workspace-tab" data-view="dashboard"><span>02</span>Inteligência</button>
-          <button class="workspace-tab" data-view="search"><span>03</span>Localizar</button>
-          <button class="workspace-tab" data-view="cycles"><span>04</span>Rotas</button>
-          <button class="workspace-tab" data-view="reports"><span>05</span>Relatórios</button>
-          <i class="workspace-nav-spacer"></i>
-          <button class="workspace-more" id="workspaceMoreBtn" type="button" aria-label="Abrir todas as áreas">Todas as áreas <b>+</b></button>
-        </div>
-        <div class="command-strip">
-          <div class="command-strip-title"><span class="command-pulse"></span><strong>Conhecimento rápido</strong><small>prevenção e operação</small></div>
-          <button class="knowledge-compact" id="funBreakBtn" type="button" data-tip="Clique para ver a resposta e navegar pelas perguntas.">
-            <span class="nq-category" id="knowledgeTickerGroup">PREVENÇÃO</span>
-            <strong id="knowledgeTickerQuestion">Carregando pergunta…</strong>
-            <span class="nq-counter" id="knowledgeTickerCounter">1/100</span>
-            <span class="knowledge-open" id="knowledgeTickerMeta">Ver resposta ›</span>
-            <span class="nq-difficulty easy" id="knowledgeTickerDifficulty">FÁCIL</span>
-            <span class="nq-helper" id="knowledgeTickerHelper">Uma dica para proteger a operação</span>
-          </button>
-        </div>
+        <nav class="quick-nav" aria-label="Atalhos principais"><span class="quick-label">ACESSO RÁPIDO</span><button class="quick-item active" data-view="central"><b>01</b>Comando</button><button class="quick-item" data-view="dashboard"><b>02</b>Inteligência</button><button class="quick-item" data-view="search"><b>03</b>Localizar</button><button class="quick-item" data-view="cycles"><b>04</b>Rotas</button><button class="quick-item" data-view="reports"><b>05</b>Relatórios</button><span class="quick-spacer"></span><button class="quick-all" id="workspaceMoreBtn" type="button">Todas as áreas <b>＋</b></button></nav>
+        <div class="knowledge-bar"><div class="knowledge-heading"><span class="command-pulse"></span><strong>Conhecimento rápido</strong><small>prevenção e operação</small></div><button class="knowledge-card" id="funBreakBtn" type="button" data-tip="Clique para ver a resposta e navegar pelas perguntas."><span class="nq-category" id="knowledgeTickerGroup">PREVENÇÃO</span><strong id="knowledgeTickerQuestion">Carregando pergunta…</strong><span class="nq-counter" id="knowledgeTickerCounter">1/100</span><span class="knowledge-open" id="knowledgeTickerMeta">Ver resposta ›</span><span class="nq-difficulty easy" id="knowledgeTickerDifficulty">FÁCIL</span><span class="nq-helper" id="knowledgeTickerHelper">Uma dica para proteger a operação</span></button></div>
       </header>
-      <section id="view" class="view"></section>
-    </div>
+      <section id="view" class="workspace-view"></section>
+    </main>
   </div>
 
-  <div class="modal-wrap hidden" id="modalWrap" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal-head"><div><h2 id="modalTitle"></h2><p id="modalSubtitle"></p></div><button class="modal-close" id="modalClose" type="button" aria-label="Fechar janela">✕</button></div>
-      <div id="modalBody" class="modal-body"></div><div class="modal-actions" id="modalActions"></div>
-    </div>
-  </div>
+  <div class="modal-wrap hidden" id="modalWrap" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><div><h2 id="modalTitle"></h2><p id="modalSubtitle"></p></div><button class="modal-close" id="modalClose" type="button" aria-label="Fechar janela">✕</button></div><div id="modalBody" class="modal-body"></div><div class="modal-actions" id="modalActions"></div></div></div>
   <div class="toast-stack" id="toastStack"></div>
-  <script type="module" src="app.js?v=7.0"></script>
+  <script type="module" src="app.js?v=8.0"></script>
 </body>
 </html>

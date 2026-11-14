@@ -1,6 +1,6 @@
-import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=7.0';
-import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=7.0';
-import * as V from './views.js?v=7.0';
+import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=8.0';
+import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=8.0';
+import * as V from './views.js?v=8.0';
 
 let currentView = 'central';
 let currentRegistryTab = 'vehicles';
@@ -86,6 +86,26 @@ function applySidebarState() {
   }
 }
 
+function closeNavigationDrawer() {
+  const sidebar = $('#sidebar');
+  const menu = $('#menuBtn');
+  const backdrop = $('#sidebarBackdrop');
+  sidebar?.classList.remove('open');
+  backdrop?.classList.remove('active');
+  menu?.setAttribute('aria-expanded', 'false');
+  menu?.setAttribute('aria-label', 'Abrir menu');
+}
+
+function openNavigationDrawer() {
+  const sidebar = $('#sidebar');
+  const menu = $('#menuBtn');
+  const backdrop = $('#sidebarBackdrop');
+  sidebar?.classList.add('open');
+  backdrop?.classList.add('active');
+  menu?.setAttribute('aria-expanded', 'true');
+  menu?.setAttribute('aria-label', 'Fechar menu');
+}
+
 function startLiveClock() {
   const el = $('#liveClockText');
   const tick = () => { if (el) el.textContent = new Date().toLocaleTimeString('pt-BR'); };
@@ -130,15 +150,12 @@ function wireNav() {
       if (btn.dataset.view === 'dashboard' && !await ensureIntelligenceAccess()) return;
       currentView = btn.dataset.view;
       $$('[data-view]').forEach((b) => b.classList.toggle('active', b.dataset.view === currentView));
-      $('#sidebar').classList.remove('open');
+      closeNavigationDrawer();
       render();
     });
   });
   $('#menuBtn').addEventListener('click', () => {
-    const sidebar = $('#sidebar');
-    const open = sidebar.classList.toggle('open');
-    $('#menuBtn').setAttribute('aria-expanded', String(open));
-    $('#menuBtn').setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    $('#sidebar')?.classList.contains('open') ? closeNavigationDrawer() : openNavigationDrawer();
   });
   $('#sidebarCollapseBtn')?.addEventListener('click', () => {
     const collapsed = localStorage.getItem('orbita_sidebar_collapsed') !== '1';
@@ -146,9 +163,9 @@ function wireNav() {
     applySidebarState();
   });
   $('#workspaceMoreBtn')?.addEventListener('click', () => {
-    $('#sidebar').classList.add('open');
-    $('#menuBtn').setAttribute('aria-expanded', 'true');
+    openNavigationDrawer();
   });
+  $('#sidebarBackdrop')?.addEventListener('click', closeNavigationDrawer);
   $('#envToggleBtn').addEventListener('click', () => {
     environment = environment === 'real' ? 'treino' : 'real';
     localStorage.setItem('orbita_env', environment);
@@ -415,7 +432,7 @@ async function render() {
 }
 
 async function updateBadges() {
-  const { Deliveries, Cycles } = await import('./db.js?v=7.0');
+  const { Deliveries, Cycles } = await import('./db.js?v=8.0');
   const rows = await Deliveries.active(environment);
   $('#pendingBadge').textContent = rows.filter((r) => r.status === 'na_loja').length;
   const trashed = await Deliveries.trashed(environment);
@@ -438,7 +455,7 @@ if ('serviceWorker' in navigator) {
     refreshingForUpdate = true;
     window.location.reload();
   });
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v7.0-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v8.0-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
 }
 
 boot();
