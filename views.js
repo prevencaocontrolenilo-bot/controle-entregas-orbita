@@ -261,132 +261,60 @@ export async function renderCentral() {
     const releasedScheduled = agendadasLiberadasIds.has(r.id);
     const statusLabel = releasedScheduled ? 'Na loja · Agendada' : (STATUS_META[r.status]?.label || r.status);
     const displayTime = releasedScheduled ? timeBR(r.scheduledAt) : timeBR(r.entryTime);
-    return `<article class="live-delivery-card" role="button" tabindex="0" data-delivery-id="${r.id}" data-tip="Compra #${r.purchaseNumber} · ${escapeHtml(r.clientName || 'Sem nome')} · Entrada ${timeBR(r.entryTime)} · Saída ${timeBR(r.leftStoreAt)} · Entrega ao cliente ${timeBR(r.deliveredAt || r.clientArrivalAt)} · Clique para abrir e editar, inclusive o número da entrega.">
-      <div><strong>#${r.purchaseNumber}</strong>${r.priority === 'alta' ? '<span>ALTA</span>' : ''}${releasedScheduled ? '<span>AGENDADA</span>' : ''}</div>
-      <p>${escapeHtml(r.clientName || r.street || 'Cliente sem nome')}</p>
-      <small>${displayTime} · ${escapeHtml(statusLabel)}</small>
-    </article>`;
-  };
-
-  return `
-    <div class="central-hero" style="--performance-color:${profile.color}">
-      <div class="orbit-decor" aria-hidden="true"><i></i><i></i><i></i></div>
-      <div class="mascot-frame interactive" role="button" tabindex="0" aria-label="Interagir com o entregador virtual" data-score="${score}">
-        <img src="assets/delivery-courier-mascot.png" alt="Entregador virtual genérico com uma encomenda" />
-        <div class="mascot-mood" id="mascotMood" data-score="${score}">${mood}</div>
-        <span class="mascot-hint">Clique em mim</span>
-      </div>
-      <div class="hero-copy">
-        <div class="eyebrow">CENTRAL OPERACIONAL · AO VIVO</div>
-        <div class="greeting-title">${greet}<span id="greetName">${firstName ? ', ' + escapeHtml(firstName) : ''}</span>! <span class="hello-wave">👋</span></div>
-        <div class="greeting-phrase">${phrase}</div>
-        <div style="color:var(--text-muted);font-size:12px;margin-top:2px">${env === 'treino' ? '🎓 Modo Treinamento — nada aqui entra no histórico oficial.' : 'Operação Real'}</div>
-      </div>
-      <aside class="shift-readiness-panel">
-        <div class="readiness-title"><div><span>PRONTIDÃO DO TURNO</span><strong>${readyKmLogs.length ? 'Operação liberada por veículo' : 'Ação necessária antes da saída'}</strong></div><button id="performanceExplainBtn" data-completion="${completionPctToday}" data-punctuality="${Math.round(punctuality*100)}" data-quality="${Math.round(quality*100)}" data-tip="Veja como o desempenho é calculado e o que fazer para melhorá-lo.">Como melhorar?</button></div>
-        <div class="readiness-actions">
-          <button id="heroKmAction" data-missing="${vehiclesMissingInitial.length}" class="${readyKmLogs.length ? 'ready' : 'blocked'}" data-tip="${readyKmLogs.length} de ${activeVehicles.length} veículo(s) com KM inicial aberto hoje. Veículos sem KM ou com expediente encerrado não iniciam ciclo."><i>⌁</i><span><small>KM PARA CICLO</small><strong>${readyKmLogs.length}/${activeVehicles.length} prontos</strong></span><b>${readyKmLogs.length ? '✓' : '!'}</b></button>
-          <button id="heroQueueAction" data-tip="${naLoja.length} entrega(s) aguardando formação de ciclo."><i>▤</i><span><small>FILA AGORA</small><strong>${naLoja.length} na loja</strong></span><b>↓</b></button>
-          <button id="heroCycleAction" data-tip="${openCycles.length} ciclo(s) ativo(s). Iniciar ciclo exige KM inicial, veículo, entregador e hora de saída."><i>↗</i><span><small>CICLOS</small><strong>${openCycles.length} ativos</strong></span><b>›</b></button>
+    return `
+    <div class="ops-v8-screen">
+      <section class="ops-v8-command-head">
+        <div class="ops-v8-command-copy">
+          <span class="ops-v8-kicker">CONTROLE DE TURNO · ${env === 'treino' ? 'TREINAMENTO' : 'OPERAÇÃO REAL'}</span>
+          <h2>${greet}${firstName ? ', ' + escapeHtml(firstName) : ''}. O que precisa ser resolvido agora?</h2>
+          <p>${phrase}</p>
+          <div class="ops-v8-command-actions">
+            <button class="btn-primary" id="qaNewDelivery">＋ Nova entrega</button>
+            <button class="btn-ghost" id="qaStartCycle">🚚 Formar ciclo</button>
+            <button class="btn-ghost" id="qaCloseDay">🗓 Fechar dia</button>
+          </div>
         </div>
-        <div class="greeting-thermo compact-thermo">${thermometerHTML(score, 'Desempenho')}</div>
-        ${vehiclesClosedToday.length ? `<small class="readiness-note">${vehiclesClosedToday.length} veículo(s) com expediente já encerrado hoje.</small>` : ''}
-      </aside>
-    </div>
-
-    <section class="return-spotlight ${returnEligible.length ? 'has-returns' : ''}" id="returnSpotlight">
-      <div class="return-spotlight-icon">↩</div>
-      <div class="return-spotlight-copy"><span>RETORNO DE ENTREGA À LOJA</span><h2>${returnEligible.length ? `${returnEligible.length} entrega(s) podem ter o retorno registrado` : 'A entrega não foi concluída no cliente?'}</h2><p>Registre a hora que voltou, o motivo, a situação da mercadoria e se haverá nova tentativa. O ciclo não fecha sem resolver isso.</p></div>
-      <div class="return-spotlight-status"><small>${returnEligible.length ? 'AGUARDANDO AÇÃO' : 'ACESSO SEMPRE VISÍVEL'}</small><strong>${returnEligible.length}</strong></div>
-      <button type="button" class="return-spotlight-btn" id="returnSpotlightBtn">Registrar retorno agora <b>›</b></button>
-    </section>
-
-    ${alerts.length ? `<div class="alert-strip">${alerts.map((a) => `<button type="button" class="alert-chip" data-query="${escapeHtml(a.query)}">${a.text}</button>`).join('')}</div>` : ''}
-
-    <section class="control-room-grid">
-      <article class="ops-score-console" id="opsScoreConsole" role="button" tabindex="0" data-tip="O índice combina conclusão (65%), pontualidade (20%) e ausência de ocorrências (15%). Clique para ver os detalhes.">
-        <div class="score-ring" style="--score:${score};--score-color:${profile.color}"><strong>${score}</strong><small>/100</small></div>
-        <div><span>PULSO DA OPERAÇÃO</span><h2>${profile.label}</h2><p>${phrase}</p></div>
-      </article>
-      <article class="ops-flow-console">
-        <div class="console-title"><span>FLUXO AO VIVO</span><strong>${pendingToday} exigem ação</strong></div>
-        <div class="flow-stages">
-          ${[['na_loja','Na loja',naLoja.length],['em_andamento','Em rota',rows.filter(r=>r.status==='em_rota').length],['no_cliente','No cliente',noCliente.length],['finalizada','Finalizadas hoje',finalizedTodayCardCount]].map(([key,label,value]) => `<button data-central-filter="${key}" data-tip="Clique para filtrar a fila por ${label.toLowerCase()}."><i></i><strong data-count="${value}">0</strong><small>${label}</small></button>`).join('')}
+        <div class="ops-v8-score" id="opsScoreConsole" role="button" tabindex="0" data-tip="O índice combina conclusão, pontualidade e qualidade.">
+          <div class="ops-v8-score-ring" style="--score:${score};--score-color:${profile.color}"><strong>${score}</strong><small>/100</small></div>
+          <div><span>PULSO DA OPERAÇÃO</span><b>${profile.label}</b><small>${pendingToday} pendência(s) exigem ação</small></div>
         </div>
-      </article>
-      <article class="ops-pulse-console" id="opsSlaConsole" role="button" tabindex="0" data-start-late="${startLateToday}" data-arrival-late="${arrivalLateToday}" data-risk="${startRiskRows.length+arrivalRiskRows.length}" data-avg-total="${formatDuration(avgTodayTotal)}" data-avg-route="${formatDuration(avgTodayRoute)}" data-tip="Clique para detalhar os dois tipos de atraso e os riscos do dia.">
-        <div class="console-title"><span>VELOCIDADE E SLA</span><strong>hoje</strong></div>
-        <div class="pulse-metrics">
-          <div data-tip="Tempo médio da entrada até a finalização no cliente."><small>Ciclo completo</small><strong>${formatDuration(avgTodayTotal)}</strong></div>
-          <div data-tip="Tempo médio entre a saída da loja e a chegada ao cliente."><small>Em rota</small><strong>${formatDuration(avgTodayRoute)}</strong></div>
-          <div data-tip="Quilômetros registrados em expedientes encerrados hoje."><small>Rodagem</small><strong>${todayKm.toFixed(1)} km</strong></div>
-          <div data-tip="Entregas finalizadas divididas pelas registradas hoje."><small>Conclusão</small><strong>${completionPctToday}%</strong></div>
-        </div>
-      </article>
-      <article class="ops-finance-console" id="opsFinanceConsole" role="button" tabindex="0" data-fees="${todayFees}" data-refunds="${todayRefunds}" data-costs="${todayCosts}" data-result="${todayResult}" data-tip="Visão financeira operacional somente com lançamentos reais de hoje. Clique para detalhar.">
-        <div class="console-title"><span>RESULTADO DO DIA</span><strong class="${todayResult < 0 ? 'negative' : ''}">${money(todayResult)}</strong></div>
-        <div class="finance-line"><span>Taxas</span><b>${money(todayFees)}</b></div>
-        <div class="finance-line"><span>Reembolsos</span><b>− ${money(todayRefunds)}</b></div>
-        <div class="finance-line"><span>Custos</span><b>− ${money(todayCosts)}</b></div>
-      </article>
-    </section>
-
-    <div class="attention-grid sla-attention-grid">
-      <button data-central-filter="atraso_inicio" class="attention-card ${startLateRows.length ? 'critical' : ''}" data-tip="Compras que não saíram em até 2 horas da entrada, incluindo atrasos históricos já realizados."><span>↗</span><div><small>ATRASO DE SAÍDA</small><strong data-count="${startLateRows.length}">0</strong><em>limite: 2 horas</em></div></button>
-      <button data-central-filter="atraso_chegada" class="attention-card ${arrivalLateRows.length ? 'critical' : ''}" data-tip="Entregas que não chegaram à casa do cliente em até 3 horas e 30 minutos da entrada."><span>⌂</span><div><small>ATRASO DE CHEGADA</small><strong data-count="${arrivalLateRows.length}">0</strong><em>limite: 3h30</em></div></button>
-      <button data-central-filter="risco_sla" class="attention-card ${startRiskRows.length+arrivalRiskRows.length ? 'risk-card' : ''}" data-tip="Entregas a menos de 30 minutos de estourar o limite de saída ou chegada."><span>◷</span><div><small>RISCO NOS PRÓX. 30 MIN</small><strong data-count="${startRiskRows.length+arrivalRiskRows.length}">0</strong><em>agir preventivamente</em></div></button>
-      <button data-central-filter="alta" class="attention-card" data-tip="Prioridades altas ainda abertas."><span>★</span><div><small>PRIORIDADE ALTA</small><strong data-count="${prioritarias.length}">0</strong><em>na fila operacional</em></div></button>
-      <button data-central-action="close-cycle" class="attention-card" data-tip="Ciclos atualmente em andamento."><span>↻</span><div><small>CICLOS ATIVOS</small><strong data-count="${openCycles.length}">0</strong><em>recursos ocupados</em></div></button>
-      <button data-central-action="km" class="attention-card" data-tip="Expedientes abertos que ainda precisam do KM final."><span>⌁</span><div><small>KM FINAL PENDENTE</small><strong data-count="${kmPendente}">0</strong><em>fechar expediente</em></div></button>
-    </div>
-
-    <section class="capacity-command" id="capacityCommand" role="button" tabindex="0" data-tip="Capacidade estimada usando apenas a média real de entregas dos ciclos fechados.">
-      <div class="capacity-copy"><span>CAPACIDADE DA PRÓXIMA SAÍDA</span><h2>${nextWaveCapacity == null ? 'Aguardando histórico de ciclos' : `${nextWaveCapacity} entrega(s) estimadas`}</h2><p>${availableReadyVehicles} veículo(s) com KM liberado e disponível · ${naLoja.length} entrega(s) na fila</p></div>
-      <div class="capacity-metrics">
-        <div><small>Veículos disponíveis</small><strong>${availableReadyVehicles}</strong></div>
-        <div><small>Média por ciclo</small><strong>${avgCycleLoad == null ? '—' : avgCycleLoad.toFixed(1)}</strong></div>
-        <div class="${nextWaveCapacity!=null&&naLoja.length>nextWaveCapacity?'pressure':''}"><small>Fila além da capacidade</small><strong>${nextWaveCapacity == null ? '—' : Math.max(0,naLoja.length-nextWaveCapacity)}</strong></div>
-        <div><small>Previsão de amanhã</small><strong>${tomorrowForecast == null ? '—' : tomorrowForecast.toFixed(1)}</strong></div>
-      </div>
-      <b>›</b>
-    </section>
-
-    <section class="operation-launcher">
-      <div class="section-heading"><div><span>COMANDOS RÁPIDOS</span><h2>Toda a operação em um só lugar</h2></div><div class="heading-signal"><i></i>Atualização automática</div></div>
-      <div class="command-dock">
-        <button class="primary-command" id="qaNewDelivery" data-tip="Cadastrar uma nova compra e colocá-la na fila."><span class="cmd-ico">🛒</span><strong>Nova entrega</strong></button>
-        <button id="qaStartCycle" data-tip="Pergunta a hora exata de saída antes de confirmar o início."><span class="cmd-ico">🚚</span><strong>Iniciar ciclo</strong></button>
-        <button id="qaArrival" data-tip="Registrar uma única vez o horário em que a entrega foi feita ao cliente."><span class="cmd-ico">📍</span><strong>Entregue ao cliente</strong></button>
-        <button id="qaReturn" data-tip="Registrar quando uma entrega retornou à loja, o motivo e a próxima tentativa."><span class="cmd-ico">↩︎</span><strong>Entrega retornou</strong></button>
-        <button id="qaCloseCycle" data-tip="Resolve pendências e pergunta a hora exata antes de confirmar o fim."><span class="cmd-ico">✅</span><strong>Finalizar ciclo</strong></button>
-        <button id="qaKm" data-tip="Registrar KM inicial ou final."><span class="cmd-ico">🛣️</span><strong>KM do dia</strong></button>
-        <button id="qaCost" data-tip="Lançar custo operacional."><span class="cmd-ico">💰</span><strong>Custo</strong></button>
-        <button id="qaCloseDay" data-tip="Confere ciclos, entregas, KM e custos antes de registrar o fechamento do dia."><span class="cmd-ico">🗓️</span><strong>Fechar dia</strong></button>
-      </div>
-    </section>
-
-    <div class="operation-panels">
-      <section class="ops-panel">
-        <div class="panel-head"><div><span class="live-mini"></span><strong>Ciclos em andamento</strong></div><button class="text-action" id="panelStartCycle">＋ Novo ciclo</button></div>
-        ${openCycles.length ? openCycles.map((c) => `<div class="ops-line cycle-live-line" data-tip="Saída confirmada às ${timeBR(c.startedAt)} · duração até agora ${formatDuration((Date.now()-new Date(c.startedAt))/60000)}"><div><strong>${escapeHtml(vName(c.vehicleId))}</strong><small>${escapeHtml(dName(c.driverId))} · saída ${timeBR(c.startedAt)} · ${formatDuration((Date.now()-new Date(c.startedAt))/60000)}</small></div><div class="cycle-live-actions"><button class="btn-ghost btn-small central-cycle-edit" data-id="${c.id}">Editar entregas</button><button class="btn-ghost btn-small central-cycle-close" data-id="${c.id}">Finalizar</button></div></div>`).join('') : '<div class="panel-empty">Nenhum ciclo aberto agora.</div>'}
       </section>
-      <section class="ops-panel">
-        <div class="panel-head"><div><span class="live-mini ${kmPendente ? 'warning' : ''}"></span><strong>Expedientes de KM</strong></div><button class="text-action" id="panelKmStart">＋ Iniciar</button></div>
-        ${pendingKmLogs.length ? pendingKmLogs.map((l) => `<div class="ops-line"><div><strong>${escapeHtml(vName(l.vehicleId))}</strong><small>KM inicial ${l.kmStart} · ${dateBR(l.shiftDate)}</small></div><button class="btn-ghost btn-small central-km-close" data-id="${l.id}">KM final</button></div>`).join('') : '<div class="panel-empty">Todos os expedientes estão fechados.</div>'}
-        ${closedTodayKmLogs.length ? `<div class="km-correction-strip"><small>KM foi finalizado antes da hora?</small>${closedTodayKmLogs.map((l)=>`<button class="btn-ghost btn-small central-km-reopen" data-id="${l.id}">↺ Corrigir ${escapeHtml(vName(l.vehicleId))}</button>`).join('')}</div>` : ''}
+
+      <section class="ops-v8-workbench">
+        <aside class="ops-v8-priority-panel">
+          <header><div><span class="ops-v8-kicker">PRÓXIMAS AÇÕES</span><h3>Prioridades do turno</h3></div><span class="ops-v8-live-dot">AO VIVO</span></header>
+          <div class="ops-v8-priority-list">
+            <button data-central-filter="atraso_inicio"><i>↗</i><span><b>Saídas atrasadas</b><small>${startLateRows.length} ocorrência(s) · limite 2h</small></span><strong>${startLateRows.length}</strong></button>
+            <button data-central-filter="atraso_chegada"><i>⌂</i><span><b>Chegadas atrasadas</b><small>${arrivalLateRows.length} ocorrência(s) · limite 3h30</small></span><strong>${arrivalLateRows.length}</strong></button>
+            <button data-central-filter="risco_sla"><i>◷</i><span><b>Risco próximo</b><small>${startRiskRows.length + arrivalRiskRows.length} perto do limite</small></span><strong>${startRiskRows.length + arrivalRiskRows.length}</strong></button>
+            <button data-central-action="km"><i>⌁</i><span><b>KM pendente</b><small>${kmPendente} expediente(s) aberto(s)</small></span><strong>${kmPendente}</strong></button>
+          </div>
+          <div class="ops-v8-mini-actions"><button id="qaArrival">📍 Registrar entrega</button><button id="qaReturn">↩ Registrar retorno</button><button id="qaKm">🛣 KM do dia</button><button id="qaCost">💰 Lançar custo</button></div>
+        </aside>
+
+        <section class="ops-v8-live-panel">
+          <header><div><span class="ops-v8-kicker">PAINEL DE FLUXO</span><h3>Estado das entregas</h3></div><button class="btn-ghost btn-small" id="heroQueueAction">Ver fila completa ↓</button></header>
+          <div class="ops-v8-flow-grid">
+            ${[['na_loja','Na loja',naLoja.length,'aguardando ciclo'],['em_andamento','Em rota',rows.filter(r=>r.status==='em_rota').length,'em deslocamento'],['no_cliente','No cliente',noCliente.length,'aguardando confirmação'],['finalizada','Finalizadas',finalizedTodayCardCount,'concluídas hoje']].map(([key,label,value,note]) => `<button data-central-filter="${key}"><span>${label}</span><strong>${value}</strong><small>${note}</small><i></i></button>`).join('')}
+          </div>
+          <div class="ops-v8-sla-row">
+            <article id="opsSlaConsole" role="button" tabindex="0" data-start-late="${startLateToday}" data-arrival-late="${arrivalLateToday}" data-risk="${startRiskRows.length+arrivalRiskRows.length}" data-avg-total="${formatDuration(avgTodayTotal)}" data-avg-route="${formatDuration(avgTodayRoute)}"><span>VELOCIDADE E SLA</span><b>${completionPctToday}% concluído</b><small>${formatDuration(avgTodayTotal)} ciclo médio · ${todayKm.toFixed(1)} km</small></article>
+            <article id="opsFinanceConsole" role="button" tabindex="0" data-fees="${todayFees}" data-refunds="${todayRefunds}" data-costs="${todayCosts}" data-result="${todayResult}"><span>RESULTADO DO DIA</span><b>${money(todayResult)}</b><small>Taxas ${money(todayFees)} · Custos ${money(todayCosts)}</small></article>
+          </div>
+        </section>
+      </section>
+
+      <section class="ops-v8-queue-block">
+        <header class="ops-v8-queue-head"><div><span class="ops-v8-kicker">FILA OPERACIONAL</span><h3>Entregas que precisam de decisão</h3><p>Selecione um item para abrir os detalhes ou use uma ação rápida.</p></div><label class="central-search">⌕<input id="centralQueueSearch" placeholder="Buscar compra, cliente, cupom ou endereço" /></label></header>
+        ${await miniList([...agendadas, ...naLoja, ...emRota])}
+      </section>
+
+      <section class="ops-v8-bottom-grid">
+        <article class="ops-v8-capacity" id="capacityCommand" role="button" tabindex="0"><div><span class="ops-v8-kicker">PRÓXIMA SAÍDA</span><h3>${nextWaveCapacity == null ? 'Ainda não há histórico suficiente' : `${nextWaveCapacity} entrega(s) estimadas`}</h3><p>${availableReadyVehicles} veículo(s) liberado(s) · ${naLoja.length} na fila</p></div><div class="capacity-metrics"><div><small>Veículos</small><strong>${availableReadyVehicles}</strong></div><div><small>Média/ciclo</small><strong>${avgCycleLoad == null ? '—' : avgCycleLoad.toFixed(1)}</strong></div><div><small>Excedente</small><strong>${nextWaveCapacity == null ? '—' : Math.max(0,naLoja.length-nextWaveCapacity)}</strong></div></div><b>›</b></article>
+        <article class="ops-v8-cycle-panel"><header><div><span class="ops-v8-kicker">RECURSOS</span><h3>Ciclos e quilometragem</h3></div><div><button class="btn-ghost btn-small" id="panelStartCycle">＋ Ciclo</button><button class="btn-ghost btn-small" id="panelKmStart">＋ KM</button></div></header><div class="ops-v8-resource-row"><span class="live-mini"></span><strong>${openCycles.length} ciclo(s) em andamento</strong><small>${pendingKmLogs.length} expediente(s) aguardando KM final</small><button id="qaCloseCycle" class="btn-ghost btn-small">Finalizar ciclo</button></div>${openCycles.length ? openCycles.slice(0,3).map((c) => `<div class="ops-line cycle-live-line"><div><strong>${escapeHtml(vName(c.vehicleId))}</strong><small>${escapeHtml(dName(c.driverId))} · saída ${timeBR(c.startedAt)}</small></div><div class="cycle-live-actions"><button class="btn-ghost btn-small central-cycle-edit" data-id="${c.id}">Editar</button><button class="btn-ghost btn-small central-cycle-close" data-id="${c.id}">Finalizar</button></div></div>`).join('') : '<div class="panel-empty">Nenhum ciclo aberto agora.</div>'}</article>
       </section>
     </div>
 
-    <section class="live-board-section">
-      <div class="section-heading"><div><span>MAPA OPERACIONAL</span><h2>Onde cada entrega está agora</h2></div><div class="section-heading-actions">${routeEditSuspects.length ? `<button type="button" class="route-recovery-btn" id="recoverRouteEditBtn">↩ Recuperar entrega afetada <b>${routeEditSuspects.length}</b></button>` : ''}<button type="button" class="numbering-repair-btn" id="recalculateDayNumbersBtn">↻ Recalcular numeração</button><div class="heading-signal"><i></i>dados reais</div></div></div>
-      <div class="live-board live-board-5">
-        ${[['Na loja',naLoja],['Em rota',rows.filter(r=>r.status==='em_rota')],['No cliente',noCliente],['Agendadas',agendadas],['Ocorrências',rows.filter(r=>['retorno','reentrega','cancelada'].includes(r.status))]].map(([label,list]) => `<div class="live-lane"><header><strong>${label}</strong><span>${list.length}</span></header><div>${list.slice(0,5).map(liveLaneCard).join('') || '<p class="lane-empty">Nenhuma entrega</p>'}</div></div>`).join('')}
-      </div>
-    </section>
-
-    <div class="queue-heading"><div><span>FILA OPERACIONAL</span><h2>Entregas que exigem acompanhamento</h2></div><label class="central-search">⌕<input id="centralQueueSearch" placeholder="Buscar compra, cupom, PDV, DOC ou cliente" /></label></div>
-    ${await miniList([...agendadas, ...naLoja, ...emRota])}
-  `;
 }
 
 async function miniList(rows) {
