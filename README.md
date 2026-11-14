@@ -1,6 +1,6 @@
-# Órbita — Controle de Entregas (v6.0)
+# Órbita — Controle de Entregas (v6.1)
 
-## v6.0 — Workspace radical e navegação reposicionada
+## v6.1 — Workspace radical e navegação reposicionada
 
 - Início da transformação operacional completa: cada tela passa a seguir o fluxo contexto → ação → detalhe, sem alterar regras de negócio ou dados.
 - Central Operacional prioriza o turno, a fila, os atrasos, retornos, ciclos, KM e comandos executáveis.
