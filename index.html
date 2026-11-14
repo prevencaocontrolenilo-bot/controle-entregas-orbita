@@ -6,8 +6,8 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta name="theme-color" content="#102A43" />
 <meta name="description" content="Órbita — centro de comando para controle de entregas, ciclos, frota e resultados." />
-<link rel="manifest" href="manifest.webmanifest?v=6.0" />
-<link rel="stylesheet" href="styles.css?v=6.0" />
+<link rel="manifest" href="manifest.webmanifest?v=7.0" />
+<link rel="stylesheet" href="styles.css?v=7.0" />
 <title>Órbita • Centro de Comando</title>
 </head>
 <body>
@@ -19,12 +19,12 @@
     </div>
   </div>
 
-  <div id="appShell" class="shell hidden">
+  <div id="appShell" class="shell new-system hidden">
     <aside class="sidebar" id="sidebar" aria-label="Navegação principal">
       <div class="command-brand">
         <div class="brand-logo-chip brand-initial" aria-label="Órbita">Ó</div>
         <div><strong>Órbita</strong><span>Centro de comando</span></div>
-        <small class="release-side">v6.0</small>
+        <small class="release-side">v7.0</small>
       </div>
       <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" type="button" aria-label="Recolher menu" aria-expanded="true"><span>‹</span><b>Recolher menu</b></button>
 
@@ -32,9 +32,9 @@
         <button class="conn-pill" id="envToggleBtn" type="button">
           <span class="conn-dot online" id="envDot"></span><span id="envPill">● Operação Real</span><b>⌄</b>
         </button>
-        <button class="conn-pill" id="operatorBtn" type="button">
-          <span class="operator-avatar">A</span><span id="operatorLabel">Quem está operando?</span><b>›</b>
-        </button>
+        <div class="conn-pill local-station-pill">
+          <span class="operator-avatar">⌂</span><span>Estação local</span><b>●</b>
+        </div>
         <div class="conn-pill connection-state"><span class="conn-dot" id="connDot"></span><span id="connLabel">Verificando conexão…</span></div>
       </div>
 
@@ -73,7 +73,7 @@
           </div>
           <div class="topbar-actions">
             <div class="live-clock utility-pill" id="liveClock"><span class="pulse-dot"></span><span id="liveClockText">--:--:--</span></div>
-            <span class="release-badge utility-pill">v6.0</span>
+            <span class="release-badge utility-pill">v7.0</span>
             <span class="monitor-mode-badge hidden" id="monitorModeBadge">👁 SOMENTE LEITURA</span>
             <button class="btn-primary topbar-cta" id="newDeliveryBtn">＋ Nova entrega</button>
           </div>
@@ -111,6 +111,6 @@
     </div>
   </div>
   <div class="toast-stack" id="toastStack"></div>
-  <script type="module" src="app.js?v=6.0"></script>
+  <script type="module" src="app.js?v=7.0"></script>
 </body>
 </html>

@@ -1,25 +1,14 @@
-# Órbita — Controle de Entregas (v6.0)
+# Órbita — Novo Sistema de Controle de Entregas (v7.0)
 
-## v6.0 — Workspace radical e navegação reposicionada
+## v7.0 — Nova aplicação com Inteligência protegida
 
-- Início da transformação operacional completa: cada tela passa a seguir o fluxo contexto → ação → detalhe, sem alterar regras de negócio ou dados.
-- Central Operacional prioriza o turno, a fila, os atrasos, retornos, ciclos, KM e comandos executáveis.
-- Central de Inteligência abre no resumo operacional e memoriza a área escolhida pelo operador para evitar excesso de informação.
-- Frota/KM ganhou resumo de expedientes abertos, KM inicial e fechamentos; relatórios e custos ganharam blocos de escolha mais claros.
-- O menu deixou de ocupar uma coluna fixa: agora é uma gaveta lateral sobreposta, aberta pelo comando principal ou por “Todas as áreas”.
-- Navegação primária reposicionada para uma barra horizontal no topo, com atalhos de trabalho e contexto atual.
-- Conteúdo passou a ocupar a largura total da tela, com nova hierarquia, espaçamento e composição editorial.
-- Todas as abas receberam cabeçalho, prioridade e organização próprios: rotas, frota, custos, busca, relatórios, auditoria, lixeira, cadastros e preferências.
-- Dashboard passou a separar resumo executivo, leitura automática, indicadores, gráficos, rankings e detalhes por blocos de decisão, com seleção explícita do que deve aparecer.
-- Cartões operacionais e indicadores com estados, hover, destaque de risco e resposta visual às ações.
-- Paleta ameixa/grafite, violeta e coral preservada; verde, amarelo e vermelho continuam reservados para estados operacionais.
-- Centro de comando reorganizado para operação ao vivo, com ações rápidas, ciclos, frota, alertas e capacidade.
-- Central de Inteligência inicia no resumo operacional e permite abrir somente Fluxo, SLA, Frota, Financeiro ou Qualidade conforme a seleção do operador.
-- Central Operacional prioriza fila, prontidão, atrasos, retornos, ciclos, KM e comandos do turno; informações financeiras e preditivas ficaram em segundo plano.
-- Cache do PWA, módulos e Service Worker alinhados na mesma versão.
-- Contraste, hierarquia tipográfica, navegação móvel e áreas de toque revisados.
-- O histórico de versões continua preservado em `_arquivo_historico`; apenas a aplicação ativa na raiz foi saneada.
-- A auditoria detalhada está em `AUDITORIA_TECNICA.md`.
+A aplicação ganhou uma nova casca de sistema, com navegação reorganizada por monitoramento, execução e organização. As funcionalidades existentes continuam sendo usadas: entregas, ciclos, frota, quilometragem, custos, relatórios, cadastros, auditoria, lixeira, preferências, filtros, backups e exportações.
+
+A opção de perfil/operador foi removida da interface. A estação funciona como uma operação local administrativa, mantendo o nome interno “Operação local” somente para preservar a rastreabilidade dos registros.
+
+A Central de Inteligência é a única área protegida. Ao acessá-la, o sistema solicita a senha padrão `1234`; depois do desbloqueio, o acesso permanece válido somente durante a sessão atual do navegador. As outras áreas não solicitam senha.
+
+A nova identidade usa azul-marinho, azul moderno, ciano, branco e grafite, com cartões mais objetivos, painéis operacionais, formulários revisados, tabelas mais legíveis e responsividade para computador, tablet e celular.
 
 ## Histórico visual anterior — v5.21
 

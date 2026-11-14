@@ -1,12 +1,15 @@
-import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=6.0';
-import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=6.0';
-import * as V from './views.js?v=6.0';
+import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=7.0';
+import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=7.0';
+import * as V from './views.js?v=7.0';
 
 let currentView = 'central';
 let currentRegistryTab = 'vehicles';
 let environment = localStorage.getItem('orbita_env') || 'real';
-let operatorName = localStorage.getItem('orbita_operator') || '';
-let operatorRole = localStorage.getItem('orbita_operator_role') || 'Administrador';
+// Estação local única: não existe mais seletor de perfil na interface.
+// Mantemos um operador interno administrativo para preservar auditoria e permissões existentes.
+let operatorName = 'Operação local';
+let operatorRole = 'Administrador';
+let intelligenceUnlocked = sessionStorage.getItem('orbita_intelligence_unlocked') === '1';
 
 export function getEnv() { return environment; }
 export function getOperatorName() { return operatorName; }
@@ -107,27 +110,24 @@ function startAutoBackup() {
 }
 
 function renderEnvPill() {
-  const readOnly = roleKey() === 'consulta';
   $('#envPill').textContent = environment === 'treino' ? '🎓 Treinamento' : '● Operação Real';
   $('#envPill').classList.toggle('treino', environment === 'treino');
-  const shownRole = readOnly ? 'Consulta / Monitor' : operatorRole;
-  $('#operatorLabel').textContent = operatorName ? `👤 ${operatorName} · ${shownRole}` : 'Quem está operando?';
   document.body.dataset.operatorRole=roleKey();
   $$('[data-view]').forEach((btn)=>btn.classList.toggle('role-hidden',!canAccessView(btn.dataset.view)));
   $('#newDeliveryBtn')?.classList.toggle('role-hidden',!canPerform('delivery_edit'));
-  $('#monitorModeBadge')?.classList.toggle('hidden', !readOnly);
   const envBtn = $('#envToggleBtn');
   if (envBtn) {
-    envBtn.disabled = readOnly;
-    envBtn.title = readOnly ? 'Perfil Consulta / Monitor acompanha somente a Operação Real.' : '';
-    envBtn.classList.toggle('monitor-locked', readOnly);
+    envBtn.disabled = false;
+    envBtn.title = 'Alternar entre Operação Real e Treinamento';
+    envBtn.classList.remove('monitor-locked');
   }
 }
 
 function wireNav() {
   $$('[data-view]').forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       if(!canAccessView(btn.dataset.view))return toast('Seu perfil não possui acesso a esta área.','error');
+      if (btn.dataset.view === 'dashboard' && !await ensureIntelligenceAccess()) return;
       currentView = btn.dataset.view;
       $$('[data-view]').forEach((b) => b.classList.toggle('active', b.dataset.view === currentView));
       $('#sidebar').classList.remove('open');
@@ -150,56 +150,37 @@ function wireNav() {
     $('#menuBtn').setAttribute('aria-expanded', 'true');
   });
   $('#envToggleBtn').addEventListener('click', () => {
-    if (roleKey() === 'consulta') return toast('Perfil Consulta / Monitor acompanha somente a Operação Real.', '');
     environment = environment === 'real' ? 'treino' : 'real';
     localStorage.setItem('orbita_env', environment);
     renderEnvPill();
     toast(environment === 'treino' ? 'Modo Treinamento ativado.' : 'Voltou para Operação Real.', '');
     render();
   });
-  $('#operatorBtn').addEventListener('click', openOperatorPicker);
 }
 
-async function openOperatorPicker() {
-  const { Collaborators } = await import('./db.js?v=6.0');
-  const list = (await Collaborators.all()).filter((c) => c.active !== false);
-  openModal({
-    title: 'Quem está operando agora?',
-    subtitle: 'Escolha o perfil do aparelho. Consulta / Monitor permite acompanhar a operação sem alterar dados.',
-    body: `
-      <form id="operatorForm">
-        ${list.length ? `<label>Colaborador cadastrado
-          <select name="existing">
-            <option value="">— Escolher da lista —</option>
-            ${list.map((c) => `<option value="${escapeAttr(c.name)}">${escapeAttr(c.name)}${c.role ? ' — ' + escapeAttr(c.role) : ''}</option>`).join('')}
-          </select>
-        </label>` : '<p style="font-size:12.5px;color:var(--text-muted)">Nenhum colaborador cadastrado ainda — cadastre em Cadastros → Colaboradores, ou digite o nome abaixo.</p>'}
-        <label>Ou digite o nome<input name="freeName" placeholder="Seu nome" value="${escapeAttr(operatorName)}" /></label>
-      </form>`,
-    actions: [
-      { label: 'Sair', kind: 'ghost', onClick: () => { operatorName = ''; operatorRole='Administrador';localStorage.removeItem('orbita_operator');localStorage.removeItem('orbita_operator_role'); renderEnvPill(); closeModal(); render(); } },
-      { label: 'Confirmar', kind: 'primary', onClick: () => {
-        const fd = Object.fromEntries(new FormData($('#operatorForm')).entries());
-        const name = (fd.existing || fd.freeName || '').trim();
-        if (!name) return toast('Escolha ou digite um nome.', 'error');
-        operatorName = name;
-        operatorRole = list.find((c)=>c.name===fd.existing)?.role || 'Líder';
-        localStorage.setItem('orbita_operator', name);
-        localStorage.setItem('orbita_operator_role',operatorRole);
-        if (roleKey() === 'consulta') {
-          environment = 'real';
-          localStorage.setItem('orbita_env', 'real');
-          currentView = 'central';
-          toast('Perfil Consulta / Monitor ativado: somente leitura.', 'success');
-        }
-        renderEnvPill();
-        closeModal();
-        render();
-      }},
-    ],
+function ensureIntelligenceAccess() {
+  if (intelligenceUnlocked) return Promise.resolve(true);
+  return new Promise((resolve) => {
+    openModal({
+      title: 'Central de Inteligência',
+      subtitle: 'Esta área concentra indicadores, SLA, financeiro e qualidade dos dados.',
+      body: '<form id="intelligenceAccessForm"><label>Senha de acesso<input name="password" type="password" inputmode="numeric" autocomplete="off" required autofocus placeholder="Digite a senha" /></label><p class="access-note">As demais áreas do sistema continuam abertas.</p></form>',
+      actions: [
+        { label: 'Cancelar', kind: 'ghost', onClick: () => { closeModal(); resolve(false); } },
+        { label: 'Entrar na Inteligência', kind: 'primary', onClick: () => {
+          const form = $('#intelligenceAccessForm');
+          if (!form.reportValidity()) return;
+          const password = String(new FormData(form).get('password') || '');
+          if (password !== '1234') return toast('Senha incorreta. A Central de Inteligência permanece bloqueada.', 'error');
+          intelligenceUnlocked = true;
+          sessionStorage.setItem('orbita_intelligence_unlocked', '1');
+          closeModal();
+          resolve(true);
+        } },
+      ],
+    });
   });
 }
-function escapeAttr(s) { return String(s ?? '').replace(/"/g, '&quot;'); }
 
 function wireGlobalActions() {
   $('#newDeliveryBtn').addEventListener('click', () => canPerform('delivery_edit')?V.openDeliveryModal():toast('Seu perfil possui acesso somente para consulta.','error'));
@@ -434,7 +415,7 @@ async function render() {
 }
 
 async function updateBadges() {
-  const { Deliveries, Cycles } = await import('./db.js?v=6.0');
+  const { Deliveries, Cycles } = await import('./db.js?v=7.0');
   const rows = await Deliveries.active(environment);
   $('#pendingBadge').textContent = rows.filter((r) => r.status === 'na_loja').length;
   const trashed = await Deliveries.trashed(environment);
@@ -457,7 +438,7 @@ if ('serviceWorker' in navigator) {
     refreshingForUpdate = true;
     window.location.reload();
   });
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v6.0-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v7.0-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
 }
 
 boot();
