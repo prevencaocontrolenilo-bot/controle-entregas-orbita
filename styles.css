@@ -4323,3 +4323,73 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
   #view:has(.intel-command-banner) .dashboard-scope { position:static; overflow-x:auto; flex-wrap:nowrap; }
   #view:has(.intel-command-banner) .dashboard-scope::before { display:none; }
 }
+
+
+/* v6.0 — transformação operacional: contexto, ação e detalhe */
+.screen-summary-strip { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:0 0 16px; }
+.screen-summary-strip > div { min-height:82px; padding:14px 16px; border:1px solid var(--line); border-radius:14px; background:var(--card); box-shadow:0 4px 14px rgba(11,42,74,.045); }
+.screen-summary-strip small { display:block; color:var(--text-muted); font-size:8.5px; font-weight:950; letter-spacing:.12em; }
+.screen-summary-strip strong { display:block; margin-top:6px; color:var(--ink); font-size:23px; line-height:1; }
+.screen-summary-strip span { display:block; margin-top:5px; color:var(--text-muted); font-size:10px; }
+.km-summary-strip > div:first-child { border-top:3px solid var(--status-transito); }
+.km-summary-strip > div:nth-child(2) { border-top:3px solid var(--status-entregue); }
+.km-summary-strip > div:nth-child(3) { border-top:3px solid var(--accent); }
+.km-active-table, .costs-active-table { box-shadow:0 7px 20px rgba(11,42,74,.055); }
+.km-active-table thead th, .costs-active-table thead th { background:#f7fafc; }
+.km-active-table tbody tr:hover, .costs-active-table tbody tr:hover { background:#fbfdff; }
+.financial-metrics .stat-card { min-height:104px; }
+.financial-metrics .stat-card strong { font-size:26px; }
+.report-choice-grid { align-items:stretch; }
+.report-choice-grid .stat-card { display:flex; flex-direction:column; justify-content:flex-start; min-height:190px; }
+.report-choice-grid .stat-card > div { margin-top:auto; }
+.report-choice-grid .stat-card:first-child { border-top:4px solid var(--status-transito) !important; }
+.report-choice-grid .stat-card:last-child { border-top:4px solid var(--status-entregue) !important; }
+.report-choice-grid .export-btn { transition:transform .16s ease, background .16s ease; }
+.report-choice-grid .export-btn:hover { transform:translateY(-1px); background:var(--paper); }
+
+/* Todas as telas administrativas seguem o mesmo fluxo de leitura. */
+#view:has(.page-table-card) .page-table-card,
+#view:has(.registry-workbench) .registry-workbench,
+#view:has(.report-period-card) .report-period-card { margin-bottom:16px; }
+#view:has(.page-table-card) .table-wrap table thead th,
+#view:has(.registry-workbench) .table-wrap table thead th { background:#f7fafc; color:var(--ink); font-size:10px; letter-spacing:.04em; }
+#view:has(.page-table-card) .table-wrap table tbody tr,
+#view:has(.registry-workbench) .table-wrap table tbody tr { transition:background .16s ease; }
+#view:has(.page-table-card) .table-wrap table tbody tr:hover,
+#view:has(.registry-workbench) .table-wrap table tbody tr:hover { background:#fbfdff; }
+#view:has(.registry-workbench) .registry-tabs { flex:1; }
+#view:has(.registry-workbench) #registryAddBtn { box-shadow:0 6px 14px rgba(11,42,74,.09); }
+#view:has(.report-period-card) .report-period-card + .report-choice-grid { margin-top:0; }
+#view:has(.report-period-card) .report-period-card + .report-choice-grid + #printArea { margin-top:14px; }
+
+/* A central operacional começa no trabalho do turno, não na análise histórica. */
+#view:has(.central-hero) .return-spotlight-copy h2 { font-size:16px; }
+#view:has(.central-hero) .attention-grid { margin-top:12px; }
+#view:has(.central-hero) .attention-card { min-height:86px; }
+#view:has(.central-hero) .operation-panels { margin-top:4px; }
+#view:has(.central-hero) .live-board-section { margin-top:4px; }
+#view:has(.central-hero) .queue-heading { margin-top:24px; }
+
+/* Inteligência: a seleção é a navegação da análise. */
+#view:has(.intel-command-banner) .dashboard-filter-bar { order:1; }
+#view:has(.intel-command-banner) .dashboard-scope { order:2; }
+#view:has(.intel-command-banner) .intel-command-banner { order:3; }
+#view:has(.intel-command-banner) .intel-hero { order:4; }
+#view:has(.intel-command-banner) .decision-brief { order:5; }
+#view:has(.intel-command-banner) .intel-section { order:6; }
+#view:has(.intel-command-banner) .intel-command-copy h2 { max-width:480px; }
+#view:has(.intel-command-banner) .decision-brief header { margin-bottom:10px; }
+#view:has(.intel-command-banner) .decision-brief header small { color:var(--text-muted); }
+
+@media (max-width:900px) {
+  .screen-summary-strip { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .report-choice-grid .stat-card { min-height:210px; }
+}
+@media (max-width:640px) {
+  .screen-summary-strip { grid-template-columns:1fr; }
+  .screen-summary-strip > div { min-height:70px; }
+  .report-choice-grid { grid-template-columns:1fr !important; }
+  .report-choice-grid .stat-card { min-height:0; }
+  .financial-metrics { grid-template-columns:1fr 1fr !important; }
+  #view:has(.central-hero) .attention-grid { grid-template-columns:1fr 1fr !important; }
+}

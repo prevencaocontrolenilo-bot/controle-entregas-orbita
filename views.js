@@ -1,7 +1,7 @@
-import { Deliveries, Vehicles, Drivers, Collaborators, Neighborhoods, CostCategories, ReturnReasons, Cycles, OdometerLogs, Costs, DayClosures, AuditLog, Counters } from './db.js?v=5.31';
-import { $, $$, money, dateBR, dateTimeBR, timeBR, escapeHtml, toast, badge, STATUS_META, guardClick, downloadCSV, downloadJSON, wirePhoneMask, animateStatCards, motivationalPhrase, performanceProfile, barChartSVG, lineChartSVG, thermometerHTML } from './helpers.js?v=5.31';
-import { getEnv, getOperatorName, getOperatorRole, canPerform, closeModal, openModal, refreshApp } from './app.js?v=5.31';
-import { exportFullExcelReport } from './excel-report.js?v=5.31';
+import { Deliveries, Vehicles, Drivers, Collaborators, Neighborhoods, CostCategories, ReturnReasons, Cycles, OdometerLogs, Costs, DayClosures, AuditLog, Counters } from './db.js?v=6.0';
+import { $, $$, money, dateBR, dateTimeBR, timeBR, escapeHtml, toast, badge, STATUS_META, guardClick, downloadCSV, downloadJSON, wirePhoneMask, animateStatCards, motivationalPhrase, performanceProfile, barChartSVG, lineChartSVG, thermometerHTML } from './helpers.js?v=6.0';
+import { getEnv, getOperatorName, getOperatorRole, canPerform, closeModal, openModal, refreshApp } from './app.js?v=6.0';
+import { exportFullExcelReport } from './excel-report.js?v=6.0';
 
 const DEFAULT_OPERATIONAL_TARGETS = { startMinutes:120, arrivalMinutes:210, warningMinutes:30, successTarget:90 };
 
@@ -2074,6 +2074,8 @@ export async function renderKm() {
   const deletedLogs = (await OdometerLogs.trashed(env)).sort((a, b) => (b.deletedAt || '').localeCompare(a.deletedAt || ''));
   const vehicles = await Vehicles.all();
   const vName = (id) => vehicles.find((v) => v.id === id)?.label || '—';
+  const openLogs = logs.filter((l) => l.kmStart != null && l.kmEnd == null);
+  const closedLogs = logs.filter((l) => l.kmStart != null && l.kmEnd != null);
 
   const rows = logs.map((l) => `
     <tr data-id="${l.id}">
@@ -2101,7 +2103,12 @@ export async function renderKm() {
     <div class="km-toolbar">
       <div class="km-history-edit-note"><span>✎</span><div><strong>Edição e exclusão controladas</strong><small>Você pode corrigir ou excluir registros incorretos. Exclusões ficam na lixeira, fora dos cálculos, com opção de restauração e histórico na auditoria.</small></div></div>
     </div>
-    ${logs.length ? `<div class="table-wrap"><table><thead><tr><th>Data</th><th>Veículo</th><th>KM inicial</th><th>KM final</th><th>Quilometragem percorrida</th><th>Ações</th></tr></thead><tbody>${rows}</tbody></table></div>`
+    <section class="screen-summary-strip km-summary-strip" aria-label="Resumo de quilometragem">
+      <div><small>EXPEDIENTES ATIVOS</small><strong>${logs.length}</strong><span>${openLogs.length} em andamento</span></div>
+      <div><small>KM INICIAL REGISTRADO</small><strong>${logs.filter((l) => l.kmStart != null).length}</strong><span>veículos liberados ou em conferência</span></div>
+      <div><small>KM FINAL FECHADO</small><strong>${closedLogs.length}</strong><span>${deletedLogs.length} registro(s) na lixeira</span></div>
+    </section>
+    ${logs.length ? `<div class="table-wrap km-active-table"><table><thead><tr><th>Data</th><th>Veículo</th><th>KM inicial</th><th>KM final</th><th>Quilometragem percorrida</th><th>Ações</th></tr></thead><tbody>${rows}</tbody></table></div>`
       : `<div class="empty-state"><strong>Nenhum registro ativo de KM</strong>Clique em "Iniciar expediente" para registrar o primeiro veículo. Os registros excluídos ficam guardados na seção abaixo.</div>`}
     ${deletedLogs.length ? `<details class="km-trash-details" style="margin-top:18px"><summary style="cursor:pointer;font-weight:800;padding:11px 0">Registros excluídos (${deletedLogs.length}) — fora dos cálculos</summary><p style="font-size:12px;color:var(--text-muted);margin:0 0 10px">Os registros não são apagados do banco nem dos backups. Se algum foi excluído por engano, você pode restaurá-lo; o sistema verificará se já existe outro expediente ativo para o mesmo veículo e data.</p><div class="table-wrap"><table><thead><tr><th>Data</th><th>Veículo</th><th>KM inicial</th><th>KM final</th><th>Excluído em / motivo</th><th>Ação</th></tr></thead><tbody>${deletedRows}</tbody></table></div></details>` : ''}
   `;
@@ -2528,7 +2535,7 @@ export async function renderCosts() {
 
   return `
     ${pageIntro('GESTÃO · FINANCEIRO', 'Custos e resultado', 'Leia o saldo operacional, acompanhe os lançamentos e investigue cada despesa.', '<button class="btn-primary" id="costNewBtn">＋ Registrar custo</button>')}
-    <div class="stat-row">
+    <div class="stat-row financial-metrics">
       <div class="stat-card"><small>Total de taxas</small><strong>${money(financial.fees)}</strong></div>
       <div class="stat-card"><small>Reembolsos</small><strong>${money(financial.refunds)}</strong></div>
       <div class="stat-card"><small>Custos ativos</small><strong>${money(financial.costsTotal)}</strong></div>
@@ -2539,7 +2546,7 @@ export async function renderCosts() {
       <div class="stat-card"><small>Custo por entrega</small><strong>${financial.deliveredCount ? money(financial.costsTotal / financial.deliveredCount) : '—'}</strong></div>
     </div>
     <p style="font-size:12px;color:var(--text-muted);margin:0 0 10px">Você pode editar um lançamento ou anulá-lo se foi registrado em duplicidade. A anulação não apaga o histórico e retira o valor dos cálculos financeiros.</p>
-    ${costs.length ? `<div class="table-wrap"><table><thead><tr><th>Data</th><th>Categoria</th><th>Veículo</th><th>Entregador</th><th>Valor</th><th>Obs.</th><th>Ações</th></tr></thead><tbody>${rows}</tbody></table></div>` : `<div class="empty-state"><strong>Nenhum custo ativo lançado</strong><span>Registre um custo ou consulte os lançamentos anulados abaixo.</span></div>`}
+    ${costs.length ? `<div class="table-wrap costs-active-table"><table><thead><tr><th>Data</th><th>Categoria</th><th>Veículo</th><th>Entregador</th><th>Valor</th><th>Obs.</th><th>Ações</th></tr></thead><tbody>${rows}</tbody></table></div>` : `<div class="empty-state"><strong>Nenhum custo ativo lançado</strong><span>Registre um custo ou consulte os lançamentos anulados abaixo.</span></div>`}
     ${annulledCosts.length ? `<details style="margin-top:18px"><summary style="cursor:pointer;font-weight:800;padding:10px 0">Lançamentos anulados (${annulledCosts.length}) — fora dos cálculos financeiros</summary><p style="font-size:12px;color:var(--text-muted);margin:0 0 10px">Os registros anulados permanecem guardados para conferência. Se uma anulação foi feita por engano, use Reativar.</p><div class="table-wrap"><table><thead><tr><th>Data</th><th>Categoria</th><th>Veículo</th><th>Entregador</th><th>Valor</th><th>Obs.</th><th>Motivo / registro da anulação</th><th>Ação</th></tr></thead><tbody>${annulledRows}</tbody></table></div></details>` : ''}
   `;
 }
@@ -2699,7 +2706,10 @@ function byWeekdayCountOccurrences(rows, weekday) {
 let dashboardPeriod = { mode: 'mes', start: '', end: '' };
 // A inteligência começa no resumo operacional; o operador escolhe quando quer abrir
 // fluxo, SLA, frota, financeiro ou qualidade. "Tudo" continua disponível como opção.
-let dashboardSection = 'geral';
+let dashboardSection = (() => {
+  try { return localStorage.getItem('controle_dashboard_section') || 'geral'; }
+  catch { return 'geral'; }
+})();
 
 function dashboardDayKey(value) {
   const d = value instanceof Date ? value : new Date(/^\d{4}-\d{2}-\d{2}$/.test(String(value)) ? `${value}T12:00:00` : value);
@@ -3144,6 +3154,7 @@ export function wireDashboardEvents() {
   $('#dashboardGoalsBtn')?.addEventListener('click',openOperationalTargetsModal);
   $$('[data-dashboard-section]').forEach((btn) => btn.addEventListener('click', () => {
     dashboardSection = btn.dataset.dashboardSection;
+    try { localStorage.setItem('controle_dashboard_section', dashboardSection); } catch {}
     $$('[data-dashboard-section]').forEach((item)=>item.classList.toggle('active',item===btn));
     $$('[data-dashboard-group]').forEach((section)=>section.classList.toggle('dashboard-section-hidden',dashboardSection!=='tudo'&&section.dataset.dashboardGroup!==dashboardSection));
   }));
@@ -3229,7 +3240,7 @@ export async function renderReports() {
       <button class="btn-ghost btn-small" id="reportTodayBtn">Hoje</button>
       <button class="btn-ghost btn-small" id="reportMonthBtn">Mês atual</button>
     </div>
-    <div class="stat-row" style="grid-template-columns:1fr 1fr">
+    <div class="stat-row report-choice-grid" style="grid-template-columns:1fr 1fr">
       <div class="stat-card">
         <small>Relatório gerencial</small>
         <p style="font-size:12.5px;color:var(--text-muted);margin:8px 0">Resumo completo com indicadores, gráfico e financeiro — pronto para impressão/PDF.</p>
@@ -3755,7 +3766,7 @@ function openVehicleAddModal(record = null) {
    ========================================================= */
 export async function renderSettings() {
   const cfg = JSON.parse(localStorage.getItem('orbita_settings') || '{}');
-  const { listAutoBackups } = await import('./db.js?v=5.31');
+  const { listAutoBackups } = await import('./db.js?v=6.0');
   const autoBackups = await listAutoBackups();
   const backupReasonLabel = (reason = '') => reason === 'abertura' ? 'Abertura do sistema' : reason === 'periodico-1min' ? 'Segurança · 1 minuto' : reason ? 'Alteração salva' : 'Automático';
   const autoList = autoBackups.length
@@ -3794,13 +3805,13 @@ export async function renderSettings() {
 export function wireSettingsEvents() {
   $$('.auto-restore-btn').forEach((btn) => btn.addEventListener('click', async () => {
     if (!confirm('Restaurar esse backup automático vai substituir os dados atuais. Continuar?')) return;
-    const { restoreAutoBackup } = await import('./db.js?v=5.31');
+    const { restoreAutoBackup } = await import('./db.js?v=6.0');
     await restoreAutoBackup(btn.dataset.id);
     toast('Backup automático restaurado.', 'success');
     refreshApp();
   }));
   $('#settingsBackupBtn')?.addEventListener('click', async () => {
-    const data = await (await import('./db.js?v=5.31')).exportAll();
+    const data = await (await import('./db.js?v=6.0')).exportAll();
     downloadJSON(`orbita-backup-completo-${new Date().toISOString().slice(0,10)}.json`, data);
     toast('Backup completo gerado.', 'success');
   });
@@ -3808,12 +3819,12 @@ export function wireSettingsEvents() {
     const file = e.target.files[0];
     if (!file) return;
     if (!confirm('Isso vai substituir os dados atuais pelo conteúdo do backup. Um backup de segurança dos dados atuais será baixado antes. Continuar?')) { e.target.value = ''; return; }
-    const currentBackup = await (await import('./db.js?v=5.31')).exportAll();
+    const currentBackup = await (await import('./db.js?v=6.0')).exportAll();
     downloadJSON(`orbita-backup-seguranca-antes-restauracao-${Date.now()}.json`, currentBackup);
     try {
       const text = await file.text();
       const data = JSON.parse(text);
-      await (await import('./db.js?v=5.31')).importAll(data);
+      await (await import('./db.js?v=6.0')).importAll(data);
       toast('Backup restaurado.', 'success');
       refreshApp();
     } catch { toast('Arquivo de backup inválido.', 'error'); }

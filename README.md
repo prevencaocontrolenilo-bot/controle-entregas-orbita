@@ -1,7 +1,11 @@
-# Órbita — Controle de Entregas (v5.31)
+# Órbita — Controle de Entregas (v6.0)
 
-## v5.31 — Workspace radical e navegação reposicionada
+## v6.0 — Workspace radical e navegação reposicionada
 
+- Início da transformação operacional completa: cada tela passa a seguir o fluxo contexto → ação → detalhe, sem alterar regras de negócio ou dados.
+- Central Operacional prioriza o turno, a fila, os atrasos, retornos, ciclos, KM e comandos executáveis.
+- Central de Inteligência abre no resumo operacional e memoriza a área escolhida pelo operador para evitar excesso de informação.
+- Frota/KM ganhou resumo de expedientes abertos, KM inicial e fechamentos; relatórios e custos ganharam blocos de escolha mais claros.
 - O menu deixou de ocupar uma coluna fixa: agora é uma gaveta lateral sobreposta, aberta pelo comando principal ou por “Todas as áreas”.
 - Navegação primária reposicionada para uma barra horizontal no topo, com atalhos de trabalho e contexto atual.
 - Conteúdo passou a ocupar a largura total da tela, com nova hierarquia, espaçamento e composição editorial.
