@@ -1,6 +1,6 @@
-# Órbita — Novo Sistema de Controle de Entregas (v8.0)
+# Órbita — Novo Sistema de Controle de Entregas (v8.1)
 
-## v8.0 — Nova aplicação com Inteligência protegida
+## v8.1 — Nova aplicação com Inteligência protegida
 
 A aplicação ganhou uma nova casca de sistema, com navegação reorganizada por monitoramento, execução e organização. As funcionalidades existentes continuam sendo usadas: entregas, ciclos, frota, quilometragem, custos, relatórios, cadastros, auditoria, lixeira, preferências, filtros, backups e exportações.
 
