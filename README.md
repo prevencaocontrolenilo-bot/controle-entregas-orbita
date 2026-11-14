@@ -1,10 +1,12 @@
-# Órbita — Controle de Entregas (v5.29)
+# Órbita — Controle de Entregas (v5.30)
 
-## v5.29 — Workspace radical e navegação reposicionada
+## v5.30 — Workspace radical e navegação reposicionada
 
 - O menu deixou de ocupar uma coluna fixa: agora é uma gaveta lateral sobreposta, aberta pelo comando principal ou por “Todas as áreas”.
 - Navegação primária reposicionada para uma barra horizontal no topo, com atalhos de trabalho e contexto atual.
 - Conteúdo passou a ocupar a largura total da tela, com nova hierarquia, espaçamento e composição editorial.
+- Todas as abas receberam cabeçalho, prioridade e organização próprios: rotas, frota, custos, busca, relatórios, auditoria, lixeira, cadastros e preferências.
+- Dashboard passou a separar resumo executivo, leitura automática, indicadores, gráficos, rankings e detalhes por blocos de decisão.
 - Cartões operacionais e indicadores com estados, hover, destaque de risco e resposta visual às ações.
 - Paleta anterior abandonada por uma identidade ameixa/grafite, violeta e coral, com verde, amarelo e vermelho reservados para estados operacionais.
 - Centro de comando reorganizado para operação ao vivo, com ações rápidas, ciclos, frota, alertas e capacidade.
