@@ -1,0 +1,11 @@
+# Histórico e cópias legadas fora do release ativo
+_arquivo_historico/
+orbita-v6.1/
+Sistema_Controle_Entregas_Nilo_V14_PC_OFFLINE_APK_READY (1)/
+
+# Pacotes gerados localmente
+*.zip
+
+# Ambiente/editor
+.DS_Store
+node_modules/
