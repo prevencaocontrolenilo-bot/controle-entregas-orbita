@@ -1,9 +1,9 @@
-const CACHE_PREFIX = 'orbita-v523-saneamento-';
+const CACHE_PREFIX = 'orbita-v524-identidade-';
 const CACHE = `${CACHE_PREFIX}1`;
 const ASSETS = [
-  './', './index.html', './styles.css?v=5.23', './app.js?v=5.23', './db.js?v=5.23', './helpers.js?v=5.23', './views.js?v=5.23', './excel-report.js?v=5.23', './manifest.webmanifest?v=5.23',
+  './', './index.html', './styles.css?v=5.24', './app.js?v=5.24', './db.js?v=5.24', './helpers.js?v=5.24', './views.js?v=5.24', './excel-report.js?v=5.24', './manifest.webmanifest?v=5.24',
  
-  './icons/icon-192.png', './icons/icon-512.png',
+  './icons/icon-192.png', './icons/icon-512.png', './assets/delivery-courier-mascot.png',
 ];
 
 self.addEventListener('install', (event) => {

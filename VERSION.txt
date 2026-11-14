@@ -1,2 +1,2 @@
-V5.23.0 — Saneamento técnico, métricas corrigidas e layout responsivo refinado.
+V5.24.0 — Saneamento técnico, métricas corrigidas e layout responsivo refinado.
 Aplicação ativa offline-first; histórico antigo preservado em _arquivo_historico. GPS ao vivo, sincronização multi-dispositivo e autenticação real não fazem parte desta versão local.
