@@ -1,6 +1,6 @@
-import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=5.25';
-import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=5.25';
-import * as V from './views.js?v=5.25';
+import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=5.26';
+import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=5.26';
+import * as V from './views.js?v=5.26';
 
 let currentView = 'central';
 let currentRegistryTab = 'vehicles';
@@ -138,7 +138,7 @@ function wireNav() {
 }
 
 async function openOperatorPicker() {
-  const { Collaborators } = await import('./db.js?v=5.25');
+  const { Collaborators } = await import('./db.js?v=5.26');
   const list = (await Collaborators.all()).filter((c) => c.active !== false);
   openModal({
     title: 'Quem está operando agora?',
@@ -386,17 +386,17 @@ async function render() {
   const sub = $('#viewSubtitle');
 
   const routes = {
-    central: ['Central Operacional', 'Sala de controle: SLAs, ciclos, retornos assistidos, KM e fechamento do dia.', V.renderCentral, V.wireCentralEvents],
-    dashboard: ['Central de Inteligência', 'Operação, SLA de saída e chegada, ciclos, frota, financeiro, qualidade e previsões.', V.renderDashboard, V.wireDashboardEvents],
-    search: ['Busca geral', 'Pesquise por qualquer campo da entrega.', V.renderSearch, V.wireSearchEvents],
-    cycles: ['Ciclos', 'Saídas em andamento e finalizadas.', V.renderCycles, V.wireCyclesEvents],
-    km: ['Quilometragem', 'Controle de KM por veículo e expediente.', V.renderKm, V.wireKmEvents],
-    costs: ['Custos e financeiro', 'Lançamentos e resultado financeiro.', V.renderCosts, V.wireCostsEvents],
+    central: ['Centro de comando', 'Visão ao vivo de entregas, ciclos, prazos e pendências da operação.', V.renderCentral, V.wireCentralEvents],
+    dashboard: ['Inteligência operacional', 'Indicadores, gargalos, SLA, frota, resultado e qualidade para decidir melhor.', V.renderDashboard, V.wireDashboardEvents],
+    search: ['Localizar entrega', 'Pesquise por qualquer campo da entrega e acompanhe seu histórico.', V.renderSearch, V.wireSearchEvents],
+    cycles: ['Ciclos de rota', 'Monte, acompanhe e finalize saídas em andamento.', V.renderCycles, V.wireCyclesEvents],
+    km: ['Frota e KM', 'Controle de expediente, quilometragem e disponibilidade dos veículos.', V.renderKm, V.wireKmEvents],
+    costs: ['Custos', 'Lançamentos, despesas e resultado financeiro da operação.', V.renderCosts, V.wireCostsEvents],
     reports: ['Relatórios', 'Gerencial (impressão/PDF) e analítico (Excel/CSV).', V.renderReports, V.wireReportsEvents],
     audit: ['Auditoria', 'Todo evento relevante fica registrado, sem edição posterior.', V.renderAudit, null],
     trash: ['Lixeira', 'Nada é apagado de verdade até você restaurar ou excluir de vez.', V.renderTrash, V.wireTrashEvents],
     registry: ['Cadastros', 'Veículos, entregadores, bairros, categorias e motivos.', () => V.renderRegistry(currentRegistryTab), () => V.wireRegistryEvents(currentRegistryTab, (tab) => { currentRegistryTab = tab; render(); })],
-    settings: ['Configurações', 'Empresa, backup e restauração.', V.renderSettings, V.wireSettingsEvents],
+    settings: ['Preferências', 'Empresa, backup, restauração e parâmetros operacionais.', V.renderSettings, V.wireSettingsEvents],
   };
 
   if(!canAccessView(currentView)){currentView='central';$$('.nav-item[data-view]').forEach((b)=>b.classList.toggle('active',b.dataset.view==='central'));}
@@ -411,7 +411,7 @@ async function render() {
 }
 
 async function updateBadges() {
-  const { Deliveries, Cycles } = await import('./db.js?v=5.25');
+  const { Deliveries, Cycles } = await import('./db.js?v=5.26');
   const rows = await Deliveries.active(environment);
   $('#pendingBadge').textContent = rows.filter((r) => r.status === 'na_loja').length;
   const trashed = await Deliveries.trashed(environment);
@@ -434,7 +434,7 @@ if ('serviceWorker' in navigator) {
     refreshingForUpdate = true;
     window.location.reload();
   });
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v5.25-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v5.26-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
 }
 
 boot();

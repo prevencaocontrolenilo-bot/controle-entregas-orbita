@@ -1,21 +1,18 @@
-# Órbita — Controle de Entregas (v5.25)
+# Órbita — Controle de Entregas (v5.26)
 
-## v5.25 — saneamento técnico e refinamento operacional
+## v5.26 — Centro de Comando e navegação remodelada
 
-- Cache do PWA, módulos, Service Worker e identificação visual alinhados na mesma versão.
-- Dashboard corrigido para calcular tempo médio no cliente quando os horários estão disponíveis.
-- Agrupamentos de datas do dashboard protegidos contra deslocamento UTC em fusos brasileiros.
-- Layout refinado para desktop, tablet e telemóvel, com tabelas navegáveis, foco acessível e áreas de toque maiores.
+- Nova casca de aplicação com menu por áreas: acompanhar, executar e administrar.
+- Centro de comando reorganizado para operação ao vivo, com ações rápidas, ciclos, frota, alertas e capacidade.
+- Central de Inteligência redesenhada para leitura executiva de métricas, gargalos, SLA, financeiro e qualidade.
+- Cache do PWA, módulos e Service Worker alinhados na mesma versão.
+- Contraste, hierarquia tipográfica, navegação móvel e áreas de toque revisados.
 - O histórico de versões continua preservado em `_arquivo_historico`; apenas a aplicação ativa na raiz foi saneada.
 - A auditoria detalhada está em `AUDITORIA_TECNICA.md`.
 
-## v5.21 — Fundo orbital animado
+## Histórico visual anterior — v5.21
 
-- A identidade do Órbita agora inclui uma Hyundai HR de entregas Nilo orbitando uma esfera luminosa, visível no fundo de todas as abas.
-- A animação é vetorial (SVG), leve, sem dependências externas, sem vídeo e sem temporizadores JavaScript.
-- O fundo fica atrás dos conteúdos, não bloqueia interações e se adapta a computador e celular.
-- Respeita a preferência de movimento reduzido do dispositivo.
-- Nenhuma regra operacional ou estrutura do banco foi alterada. Banco `orbita-v2` / versão 4 mantido; históricos e backups preservados.
+- A identidade orbital foi substituída na v5.24+ por uma linguagem própria de logística e pelo mascote genérico de entregas.
 
 
 ## v5.20 — Exclusão segura de registros de quilometragem
