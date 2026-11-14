@@ -1,16 +1,17 @@
-# Órbita — Controle de Entregas (v5.30)
+# Órbita — Controle de Entregas (v5.31)
 
-## v5.30 — Workspace radical e navegação reposicionada
+## v5.31 — Workspace radical e navegação reposicionada
 
 - O menu deixou de ocupar uma coluna fixa: agora é uma gaveta lateral sobreposta, aberta pelo comando principal ou por “Todas as áreas”.
 - Navegação primária reposicionada para uma barra horizontal no topo, com atalhos de trabalho e contexto atual.
 - Conteúdo passou a ocupar a largura total da tela, com nova hierarquia, espaçamento e composição editorial.
 - Todas as abas receberam cabeçalho, prioridade e organização próprios: rotas, frota, custos, busca, relatórios, auditoria, lixeira, cadastros e preferências.
-- Dashboard passou a separar resumo executivo, leitura automática, indicadores, gráficos, rankings e detalhes por blocos de decisão.
+- Dashboard passou a separar resumo executivo, leitura automática, indicadores, gráficos, rankings e detalhes por blocos de decisão, com seleção explícita do que deve aparecer.
 - Cartões operacionais e indicadores com estados, hover, destaque de risco e resposta visual às ações.
-- Paleta anterior abandonada por uma identidade ameixa/grafite, violeta e coral, com verde, amarelo e vermelho reservados para estados operacionais.
+- Paleta ameixa/grafite, violeta e coral preservada; verde, amarelo e vermelho continuam reservados para estados operacionais.
 - Centro de comando reorganizado para operação ao vivo, com ações rápidas, ciclos, frota, alertas e capacidade.
-- Central de Inteligência redesenhada para leitura executiva de métricas, gargalos, SLA, financeiro e qualidade.
+- Central de Inteligência inicia no resumo operacional e permite abrir somente Fluxo, SLA, Frota, Financeiro ou Qualidade conforme a seleção do operador.
+- Central Operacional prioriza fila, prontidão, atrasos, retornos, ciclos, KM e comandos do turno; informações financeiras e preditivas ficaram em segundo plano.
 - Cache do PWA, módulos e Service Worker alinhados na mesma versão.
 - Contraste, hierarquia tipográfica, navegação móvel e áreas de toque revisados.
 - O histórico de versões continua preservado em `_arquivo_historico`; apenas a aplicação ativa na raiz foi saneada.
