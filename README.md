@@ -1,11 +1,12 @@
-# Órbita — Controle de Entregas (v5.28)
+# Órbita — Controle de Entregas (v5.29)
 
-## v5.28 — Centro de Comando e navegação remodelada
+## v5.29 — Workspace radical e navegação reposicionada
 
-- Nova casca de aplicação com menu por áreas: acompanhar, executar e administrar.
-- Menu lateral recolhível no desktop, expansível a qualquer momento e com estado salvo no navegador.
+- O menu deixou de ocupar uma coluna fixa: agora é uma gaveta lateral sobreposta, aberta pelo comando principal ou por “Todas as áreas”.
+- Navegação primária reposicionada para uma barra horizontal no topo, com atalhos de trabalho e contexto atual.
+- Conteúdo passou a ocupar a largura total da tela, com nova hierarquia, espaçamento e composição editorial.
 - Cartões operacionais e indicadores com estados, hover, destaque de risco e resposta visual às ações.
-- Nova paleta navy, azul moderno, ciano, branco e grafite, com verde, amarelo e vermelho reservados para estados operacionais.
+- Paleta anterior abandonada por uma identidade ameixa/grafite, violeta e coral, com verde, amarelo e vermelho reservados para estados operacionais.
 - Centro de comando reorganizado para operação ao vivo, com ações rápidas, ciclos, frota, alertas e capacidade.
 - Central de Inteligência redesenhada para leitura executiva de métricas, gargalos, SLA, financeiro e qualidade.
 - Cache do PWA, módulos e Service Worker alinhados na mesma versão.

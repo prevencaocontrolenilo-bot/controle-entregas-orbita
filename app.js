@@ -1,6 +1,6 @@
-import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=5.28';
-import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=5.28';
-import * as V from './views.js?v=5.28';
+import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=5.29';
+import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=5.29';
+import * as V from './views.js?v=5.29';
 
 let currentView = 'central';
 let currentRegistryTab = 'vehicles';
@@ -113,7 +113,7 @@ function renderEnvPill() {
   const shownRole = readOnly ? 'Consulta / Monitor' : operatorRole;
   $('#operatorLabel').textContent = operatorName ? `👤 ${operatorName} · ${shownRole}` : 'Quem está operando?';
   document.body.dataset.operatorRole=roleKey();
-  $$('.nav-item[data-view]').forEach((btn)=>btn.classList.toggle('role-hidden',!canAccessView(btn.dataset.view)));
+  $$('[data-view]').forEach((btn)=>btn.classList.toggle('role-hidden',!canAccessView(btn.dataset.view)));
   $('#newDeliveryBtn')?.classList.toggle('role-hidden',!canPerform('delivery_edit'));
   $('#monitorModeBadge')?.classList.toggle('hidden', !readOnly);
   const envBtn = $('#envToggleBtn');
@@ -125,11 +125,11 @@ function renderEnvPill() {
 }
 
 function wireNav() {
-  $$('.nav-item[data-view]').forEach((btn) => {
+  $$('[data-view]').forEach((btn) => {
     btn.addEventListener('click', () => {
       if(!canAccessView(btn.dataset.view))return toast('Seu perfil não possui acesso a esta área.','error');
       currentView = btn.dataset.view;
-      $$('.nav-item[data-view]').forEach((b) => b.classList.toggle('active', b === btn));
+      $$('[data-view]').forEach((b) => b.classList.toggle('active', b.dataset.view === currentView));
       $('#sidebar').classList.remove('open');
       render();
     });
@@ -145,6 +145,10 @@ function wireNav() {
     localStorage.setItem('orbita_sidebar_collapsed', collapsed ? '1' : '0');
     applySidebarState();
   });
+  $('#workspaceMoreBtn')?.addEventListener('click', () => {
+    $('#sidebar').classList.add('open');
+    $('#menuBtn').setAttribute('aria-expanded', 'true');
+  });
   $('#envToggleBtn').addEventListener('click', () => {
     if (roleKey() === 'consulta') return toast('Perfil Consulta / Monitor acompanha somente a Operação Real.', '');
     environment = environment === 'real' ? 'treino' : 'real';
@@ -157,7 +161,7 @@ function wireNav() {
 }
 
 async function openOperatorPicker() {
-  const { Collaborators } = await import('./db.js?v=5.28');
+  const { Collaborators } = await import('./db.js?v=5.29');
   const list = (await Collaborators.all()).filter((c) => c.active !== false);
   openModal({
     title: 'Quem está operando agora?',
@@ -391,7 +395,7 @@ export function refreshApp() { render(); }
 
 window.__orbitaGoToSearch = (query) => {
   currentView = 'search';
-  $$('.nav-item[data-view]').forEach((b) => b.classList.toggle('active', b.dataset.view === 'search'));
+  $$('[data-view]').forEach((b) => b.classList.toggle('active', b.dataset.view === 'search'));
   render().then(() => {
     const input = $('#searchInput');
     if (input && query) { input.value = query; input.dispatchEvent(new Event('input')); }
@@ -418,7 +422,7 @@ async function render() {
     settings: ['Preferências', 'Empresa, backup, restauração e parâmetros operacionais.', V.renderSettings, V.wireSettingsEvents],
   };
 
-  if(!canAccessView(currentView)){currentView='central';$$('.nav-item[data-view]').forEach((b)=>b.classList.toggle('active',b.dataset.view==='central'));}
+  if(!canAccessView(currentView)){currentView='central';$$('[data-view]').forEach((b)=>b.classList.toggle('active',b.dataset.view==='central'));}
   const [t, s, renderFn, wireFn] = routes[currentView] || routes.central;
   title.textContent = t;
   sub.textContent = s;
@@ -430,7 +434,7 @@ async function render() {
 }
 
 async function updateBadges() {
-  const { Deliveries, Cycles } = await import('./db.js?v=5.28');
+  const { Deliveries, Cycles } = await import('./db.js?v=5.29');
   const rows = await Deliveries.active(environment);
   $('#pendingBadge').textContent = rows.filter((r) => r.status === 'na_loja').length;
   const trashed = await Deliveries.trashed(environment);
@@ -453,7 +457,7 @@ if ('serviceWorker' in navigator) {
     refreshingForUpdate = true;
     window.location.reload();
   });
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v5.28-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v5.29-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
 }
 
 boot();

@@ -4020,3 +4020,148 @@ input:focus, select:focus, textarea:focus { border-color: var(--cyan) !important
   .intel-metric-grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
   table { min-width: 680px; }
 }
+
+
+/* =========================================================
+   v5.29 — WORKSPACE RADICAL
+   Mudança real de posicionamento: menu virou gaveta sobreposta,
+   navegação principal foi para o topo e o conteúdo ganhou tela inteira.
+   ========================================================= */
+:root {
+  --ink: #24202d;
+  --ink-2: #41384f;
+  --navy-900: #24202d;
+  --navy-800: #2d2738;
+  --navy-700: #493d58;
+  --blue: #7357d9;
+  --blue-soft: #f0edff;
+  --cyan: #e46a54;
+  --cyan-soft: #fff0ec;
+  --paper: #f7f4f1;
+  --card: #fffdfb;
+  --line: #e5ded8;
+  --text: #2f2a35;
+  --text-muted: #756d78;
+  --accent: #e46a54;
+  --accent-ink: #fff;
+  --status-pendente: #d9932f;
+  --status-transito: #7357d9;
+  --status-entregue: #229b79;
+  --status-problema: #c84b57;
+  --radius: 14px;
+}
+html, body { background: var(--paper) !important; color: var(--text) !important; }
+
+/* A antiga coluna lateral deixa de ocupar espaço: vira drawer por cima do conteúdo. */
+.shell { display: block !important; min-height: 100vh; }
+.sidebar {
+  position: fixed !important; z-index: 100; inset: 0 auto 0 0; width: 296px !important; flex-basis: auto !important;
+  transform: translateX(-106%); transition: transform .28s cubic-bezier(.22,.8,.25,1), box-shadow .28s ease;
+  border-right: 1px solid rgba(255,255,255,.12) !important; box-shadow: 22px 0 70px rgba(36,32,45,.28) !important;
+}
+.sidebar.open { transform: translateX(0); }
+.sidebar::after { content: 'NAVEGAÇÃO'; position: absolute; right: -75px; top: 50%; transform: rotate(-90deg); color: rgba(36,32,45,.35); font-size: 9px; font-weight: 900; letter-spacing: .2em; pointer-events: none; }
+.main { width: 100% !important; min-height: 100vh; margin: 0 !important; background: var(--paper) !important; }
+.sidebar-collapse-btn { background: rgba(255,255,255,.08) !important; }
+.shell.sidebar-collapsed .sidebar { width: 296px !important; flex-basis: auto !important; }
+.shell.sidebar-collapsed .sidebar > * { display: initial !important; }
+.shell.sidebar-collapsed .sidebar { transform: translateX(-106%); }
+.shell.sidebar-collapsed .sidebar.open { transform: translateX(0); }
+.shell.sidebar-collapsed .command-brand { grid-template-columns: 46px minmax(0,1fr) auto !important; justify-items: initial !important; }
+.shell.sidebar-collapsed .command-brand > div:nth-child(2), .shell.sidebar-collapsed .command-brand .release-side,
+.shell.sidebar-collapsed .sidebar-collapse-btn b, .shell.sidebar-collapsed .side-context .conn-pill span:not(.conn-dot):not(.operator-avatar),
+.shell.sidebar-collapsed .side-context .conn-pill b, .shell.sidebar-collapsed .nav-group-label,
+.shell.sidebar-collapsed .nav-item > span:not(.ico):not(.badge), .shell.sidebar-collapsed .dev-footer span,
+.shell.sidebar-collapsed .dev-footer small, .shell.sidebar-collapsed .install-action { display: initial !important; }
+
+/* Novo topo: identidade, contexto e navegação no mesmo eixo horizontal. */
+.command-topbar { padding: 0 38px !important; background: var(--card) !important; border-bottom: 1px solid var(--line) !important; box-shadow: 0 5px 24px rgba(36,32,45,.055) !important; }
+.topbar-main-row { min-height: 82px; }
+.topbar-title-wrap { gap: 16px !important; }
+.menu-btn { width: 43px !important; height: 43px !important; border-radius: 50% !important; background: var(--ink) !important; border: 0 !important; color: #fff !important; box-shadow: 0 8px 18px rgba(36,32,45,.2); }
+.menu-btn:hover { background: var(--blue) !important; }
+.breadcrumb { display: block !important; min-width: 210px; }
+.breadcrumb span, .breadcrumb b { display: none !important; }
+.breadcrumb strong { display: block; color: var(--ink) !important; font-size: 19px !important; line-height: 1.2; }
+.topbar-title-block { margin-top: 4px !important; }
+.topbar-title-block p { color: var(--text-muted) !important; font-size: 11px !important; }
+.topbar-actions { gap: 8px !important; }
+.utility-pill { min-height: 35px !important; border-color: var(--line) !important; background: var(--paper) !important; color: var(--ink-2) !important; box-shadow: none !important; }
+.release-badge { color: var(--blue) !important; background: var(--blue-soft) !important; border-color: #d8d0fc !important; }
+.topbar-cta, .btn-primary { background: var(--accent) !important; color: #fff !important; border-radius: 9px !important; box-shadow: 0 8px 17px rgba(228,106,84,.22) !important; }
+.topbar-cta:hover, .btn-primary:hover { background: var(--blue) !important; }
+.workspace-nav { display: flex; align-items: center; gap: 5px; min-height: 48px; border-top: 1px solid #eee8e3; overflow-x: auto; }
+.workspace-nav-label { margin-right: 12px; color: #a49a9d; font-size: 9px; font-weight: 950; letter-spacing: .17em; }
+.workspace-tab, .workspace-more { display: inline-flex; align-items: center; gap: 7px; min-height: 32px; padding: 6px 11px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: #82777d; font-size: 11px; font-weight: 850; white-space: nowrap; }
+.workspace-tab span { color: #afa5a5; font-size: 8px; font-weight: 950; }
+.workspace-tab:hover { background: #f4efec; color: var(--ink); }
+.workspace-tab.active { background: var(--ink); color: #fff; box-shadow: 0 5px 12px rgba(36,32,45,.14); }
+.workspace-tab.active span { color: #f6b2a4; }
+.workspace-nav-spacer { flex: 1; }
+.workspace-more { color: var(--accent); border-color: #f0cbc3; background: var(--cyan-soft); }
+.workspace-more:hover { color: #fff; border-color: var(--accent); background: var(--accent); }
+.command-strip { display: none !important; }
+
+/* Nova área central: mais ar, menos repetição de painéis colados. */
+.view { max-width: 1720px !important; padding: 30px 38px 64px !important; margin: 0 auto !important; }
+.view::before { content: ''; display: block; width: 58px; height: 4px; margin-bottom: 19px; border-radius: 4px; background: linear-gradient(90deg,var(--accent),var(--blue)); }
+.section-heading, .intel-section-head { margin-bottom: 21px !important; }
+.section-heading h2, .intel-section-head h2 { font-size: 25px !important; color: var(--ink) !important; }
+.section-heading p, .intel-section-head p { color: var(--text-muted) !important; }
+
+/* Nova linguagem de painéis: branco quente, cantos menores e contraste de cabeçalho. */
+.card, .chart-card, .ranking-panel, .driver-table-panel, .intel-metric, .intel-hero > article,
+.ops-panel, .ops-score-console, .ops-flow-console, .ops-pulse-console, .ops-finance-console,
+.attention-card, .forecast-strip, .decision-brief, .report-card, .settings-card {
+  border-color: var(--line) !important; border-radius: 14px !important; box-shadow: 0 4px 14px rgba(36,32,45,.045) !important;
+}
+.card:hover, .chart-card:hover, .ranking-panel:hover, .intel-metric:hover, .attention-card:hover, .ops-panel:hover, .report-card:hover, .settings-card:hover { transform: translateY(-2px); border-color: #d1c1dd !important; box-shadow: 0 16px 30px rgba(36,32,45,.10) !important; }
+.intel-metric { background: var(--card) !important; border-top: 3px solid #e5ded8 !important; }
+.intel-metric.good { border-top-color: var(--status-entregue) !important; }
+.intel-metric.warning { border-top-color: var(--status-pendente) !important; }
+.intel-metric.bad { border-top-color: var(--status-problema) !important; }
+.intel-metric strong, .card h2, .card h3 { color: var(--ink) !important; }
+.ops-score-console { background: linear-gradient(135deg,var(--ink),#493d58) !important; }
+.ops-score-console span, .console-title span { color: #f5a697 !important; }
+.ops-flow-console, .ops-pulse-console, .ops-finance-console { background: var(--card) !important; }
+.command-dock { background: var(--card) !important; border-color: var(--line) !important; border-radius: 14px !important; box-shadow: none !important; }
+.command-dock button { background: #fbf9f7 !important; border-color: var(--line) !important; color: var(--ink) !important; border-radius: 10px !important; }
+.command-dock button:hover { background: var(--blue-soft) !important; border-color: #cfc4f6 !important; }
+.command-dock .cmd-ico, .command-dock span { background: var(--cyan-soft) !important; color: var(--accent) !important; }
+.command-dock .primary-command { background: var(--blue) !important; color: #fff !important; }
+.dashboard-scope { position: static !important; margin-bottom: 24px !important; background: var(--card) !important; border-color: var(--line) !important; box-shadow: none !important; }
+.dashboard-scope button.active { background: var(--blue) !important; color: #fff !important; }
+
+/* Tabelas e filtros passam a ser blocos editoriais, não listas densas. */
+table { border: 1px solid var(--line) !important; border-radius: 12px !important; background: var(--card) !important; }
+thead th { background: #f3efec !important; color: #756b72 !important; border-bottom-color: var(--line) !important; }
+tbody tr:hover td { background: #fff7f4 !important; }
+input, select, textarea { background: #fff !important; border-color: #d8cec8 !important; border-radius: 8px !important; }
+input:focus, select:focus, textarea:focus { border-color: var(--blue) !important; box-shadow: 0 0 0 4px rgba(115,87,217,.12) !important; }
+.btn-ghost, .btn-secondary { background: #f5f1ee !important; color: var(--ink) !important; border-color: var(--line) !important; }
+
+/* Mobile não é uma sidebar comprimida: é um drawer e uma barra superior própria. */
+@media (max-width: 900px) {
+  .command-topbar { padding: 0 16px !important; }
+  .topbar-main-row { min-height: 76px; }
+  .topbar-title-wrap { align-items: center !important; }
+  .breadcrumb { min-width: 0; }
+  .topbar-title-block { display: none; }
+  .topbar-actions .live-clock, .topbar-actions .release-badge { display: none; }
+  .workspace-nav { margin: 0 -2px; }
+  .workspace-nav-label, .workspace-more { display: none; }
+  .workspace-nav-spacer { display: none; }
+  .view { padding: 24px 17px 45px !important; }
+  .shell.sidebar-collapsed .sidebar { transform: translateX(-106%) !important; width: 296px !important; }
+  .shell.sidebar-collapsed .sidebar.open { transform: translateX(0) !important; }
+}
+@media (max-width: 620px) {
+  .topbar-main-row { display: flex !important; flex-wrap: wrap; padding: 12px 0; }
+  .topbar-actions { margin-left: auto; }
+  .topbar-cta { min-height: 37px; padding: 7px 10px !important; font-size: 11px; }
+  .workspace-tab { padding: 6px 9px; }
+  .workspace-tab span { display: none; }
+  .view h2 { font-size: 21px !important; }
+  .command-dock { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+  .intel-metric-grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+}
