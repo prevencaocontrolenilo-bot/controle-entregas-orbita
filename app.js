@@ -1,6 +1,6 @@
-import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=5.26';
-import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=5.26';
-import * as V from './views.js?v=5.26';
+import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=5.27';
+import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=5.27';
+import * as V from './views.js?v=5.27';
 
 let currentView = 'central';
 let currentRegistryTab = 'vehicles';
@@ -57,6 +57,7 @@ function updateConnection() {
 /* ---------- app shell ---------- */
 async function startApp() {
   $('#appShell').classList.remove('hidden');
+  applySidebarState();
   renderEnvPill();
   wireNav();
   wireGlobalActions();
@@ -67,6 +68,19 @@ async function startApp() {
   startLiveClock();
   startAutoBackup();
   render();
+}
+
+function applySidebarState() {
+  const collapsed = localStorage.getItem('orbita_sidebar_collapsed') === '1';
+  const shell = $('#appShell');
+  const button = $('#sidebarCollapseBtn');
+  shell?.classList.toggle('sidebar-collapsed', collapsed);
+  if (button) {
+    button.setAttribute('aria-expanded', String(!collapsed));
+    button.setAttribute('aria-label', collapsed ? 'Expandir menu' : 'Recolher menu');
+    button.querySelector('span').textContent = collapsed ? '›' : '‹';
+    button.querySelector('b').textContent = collapsed ? 'Expandir menu' : 'Recolher menu';
+  }
 }
 
 function startLiveClock() {
@@ -126,6 +140,11 @@ function wireNav() {
     $('#menuBtn').setAttribute('aria-expanded', String(open));
     $('#menuBtn').setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
   });
+  $('#sidebarCollapseBtn')?.addEventListener('click', () => {
+    const collapsed = localStorage.getItem('orbita_sidebar_collapsed') !== '1';
+    localStorage.setItem('orbita_sidebar_collapsed', collapsed ? '1' : '0');
+    applySidebarState();
+  });
   $('#envToggleBtn').addEventListener('click', () => {
     if (roleKey() === 'consulta') return toast('Perfil Consulta / Monitor acompanha somente a Operação Real.', '');
     environment = environment === 'real' ? 'treino' : 'real';
@@ -138,7 +157,7 @@ function wireNav() {
 }
 
 async function openOperatorPicker() {
-  const { Collaborators } = await import('./db.js?v=5.26');
+  const { Collaborators } = await import('./db.js?v=5.27');
   const list = (await Collaborators.all()).filter((c) => c.active !== false);
   openModal({
     title: 'Quem está operando agora?',
@@ -411,7 +430,7 @@ async function render() {
 }
 
 async function updateBadges() {
-  const { Deliveries, Cycles } = await import('./db.js?v=5.26');
+  const { Deliveries, Cycles } = await import('./db.js?v=5.27');
   const rows = await Deliveries.active(environment);
   $('#pendingBadge').textContent = rows.filter((r) => r.status === 'na_loja').length;
   const trashed = await Deliveries.trashed(environment);
@@ -434,7 +453,7 @@ if ('serviceWorker' in navigator) {
     refreshingForUpdate = true;
     window.location.reload();
   });
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v5.26-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v5.27-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
 }
 
 boot();
