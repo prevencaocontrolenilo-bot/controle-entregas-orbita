@@ -1,7 +1,7 @@
-import { Deliveries, Vehicles, Drivers, Collaborators, Neighborhoods, CostCategories, ReturnReasons, Cycles, OdometerLogs, Costs, DayClosures, AuditLog, Counters } from './db.js?v=8.3';
-import { $, $$, money, dateBR, dateTimeBR, timeBR, escapeHtml, toast, badge, STATUS_META, guardClick, downloadCSV, downloadJSON, wirePhoneMask, animateStatCards, motivationalPhrase, performanceProfile, barChartSVG, lineChartSVG, thermometerHTML } from './helpers.js?v=8.3';
-import { getEnv, getOperatorName, getOperatorRole, canPerform, closeModal, openModal, refreshApp } from './app.js?v=8.3';
-import { exportFullExcelReport } from './excel-report.js?v=8.3';
+import { Deliveries, Vehicles, Drivers, Collaborators, Neighborhoods, CostCategories, ReturnReasons, Cycles, OdometerLogs, Costs, DayClosures, AuditLog, Counters } from './db.js?v=8.4';
+import { $, $$, money, dateBR, dateTimeBR, timeBR, escapeHtml, toast, badge, STATUS_META, guardClick, downloadCSV, downloadJSON, wirePhoneMask, animateStatCards, motivationalPhrase, performanceProfile, barChartSVG, lineChartSVG, thermometerHTML } from './helpers.js?v=8.4';
+import { getEnv, getOperatorName, getOperatorRole, canPerform, closeModal, openModal, refreshApp } from './app.js?v=8.4';
+import { exportFullExcelReport } from './excel-report.js?v=8.4';
 
 const DEFAULT_OPERATIONAL_TARGETS = { startMinutes:120, arrivalMinutes:210, warningMinutes:30, successTarget:90 };
 
@@ -269,6 +269,9 @@ export async function renderCentral() {
   };
 
   const queueMarkup = await miniList([...agendadas, ...naLoja, ...emRota]);
+  const flowMarkup = [['na_loja','Na loja',naLoja.length,'aguardando ciclo'],['em_andamento','Em rota',rows.filter(r=>r.status==='em_rota').length,'em deslocamento'],['no_cliente','No cliente',noCliente.length,'aguardando confirmação'],['finalizada','Finalizadas',finalizedTodayCardCount,'concluídas hoje']]
+    .map(([key,label,value,note]) => '<button data-central-filter="' + key + '"><span>' + label + '</span><strong>' + value + '</strong><small>' + note + '</small><i></i></button>').join('');
+  const cyclesMarkup = openCycles.length ? openCycles.slice(0,3).map((c) => '<div class="ops-line cycle-live-line"><div><strong>' + escapeHtml(vName(c.vehicleId)) + '</strong><small>' + escapeHtml(dName(c.driverId)) + ' · saída ' + timeBR(c.startedAt) + '</small></div><div class="cycle-live-actions"><button class="btn-ghost btn-small central-cycle-edit" data-id="' + c.id + '">Editar</button><button class="btn-ghost btn-small central-cycle-close" data-id="' + c.id + '">Finalizar</button></div></div>').join('') : '<div class="panel-empty">Nenhum ciclo aberto agora.</div>';
 
   return `
     <div class="ops-v8-screen">
@@ -304,7 +307,7 @@ export async function renderCentral() {
         <section class="ops-v8-live-panel">
           <header><div><span class="ops-v8-kicker">PAINEL DE FLUXO</span><h3>Estado das entregas</h3></div><button class="btn-ghost btn-small" id="heroQueueAction">Ver fila completa ↓</button></header>
           <div class="ops-v8-flow-grid">
-            ${[['na_loja','Na loja',naLoja.length,'aguardando ciclo'],['em_andamento','Em rota',rows.filter(r=>r.status==='em_rota').length,'em deslocamento'],['no_cliente','No cliente',noCliente.length,'aguardando confirmação'],['finalizada','Finalizadas',finalizedTodayCardCount,'concluídas hoje']].map(([key,label,value,note]) => `<button data-central-filter="${key}"><span>${label}</span><strong>${value}</strong><small>${note}</small><i></i></button>`).join('')}
+            ${flowMarkup}
           </div>
           <div class="ops-v8-sla-row">
             <article id="opsSlaConsole" role="button" tabindex="0" data-start-late="${startLateToday}" data-arrival-late="${arrivalLateToday}" data-risk="${startRiskRows.length+arrivalRiskRows.length}" data-avg-total="${formatDuration(avgTodayTotal)}" data-avg-route="${formatDuration(avgTodayRoute)}"><span>VELOCIDADE E SLA</span><b>${completionPctToday}% concluído</b><small>${formatDuration(avgTodayTotal)} ciclo médio · ${todayKm.toFixed(1)} km</small></article>
@@ -320,7 +323,7 @@ export async function renderCentral() {
 
       <section class="ops-v8-bottom-grid">
         <article class="ops-v8-capacity" id="capacityCommand" role="button" tabindex="0"><div><span class="ops-v8-kicker">PRÓXIMA SAÍDA</span><h3>${nextWaveCapacity == null ? 'Ainda não há histórico suficiente' : String(nextWaveCapacity) + ' entrega(s) estimadas'}</h3><p>${availableReadyVehicles} veículo(s) liberado(s) · ${naLoja.length} na fila</p></div><div class="capacity-metrics"><div><small>Veículos</small><strong>${availableReadyVehicles}</strong></div><div><small>Média/ciclo</small><strong>${avgCycleLoad == null ? '—' : avgCycleLoad.toFixed(1)}</strong></div><div><small>Excedente</small><strong>${nextWaveCapacity == null ? '—' : Math.max(0,naLoja.length-nextWaveCapacity)}</strong></div></div><b>›</b></article>
-        <article class="ops-v8-cycle-panel"><header><div><span class="ops-v8-kicker">RECURSOS</span><h3>Ciclos e quilometragem</h3></div><div><button class="btn-ghost btn-small" id="panelStartCycle">＋ Ciclo</button><button class="btn-ghost btn-small" id="panelKmStart">＋ KM</button></div></header><div class="ops-v8-resource-row"><span class="live-mini"></span><strong>${openCycles.length} ciclo(s) em andamento</strong><small>${pendingKmLogs.length} expediente(s) aguardando KM final</small><button id="qaCloseCycle" class="btn-ghost btn-small">Finalizar ciclo</button></div>${openCycles.length ? openCycles.slice(0,3).map((c) => `<div class="ops-line cycle-live-line"><div><strong>${escapeHtml(vName(c.vehicleId))}</strong><small>${escapeHtml(dName(c.driverId))} · saída ${timeBR(c.startedAt)}</small></div><div class="cycle-live-actions"><button class="btn-ghost btn-small central-cycle-edit" data-id="${c.id}">Editar</button><button class="btn-ghost btn-small central-cycle-close" data-id="${c.id}">Finalizar</button></div></div>`).join('') : '<div class="panel-empty">Nenhum ciclo aberto agora.</div>'}</article>
+        <article class="ops-v8-cycle-panel"><header><div><span class="ops-v8-kicker">RECURSOS</span><h3>Ciclos e quilometragem</h3></div><div><button class="btn-ghost btn-small" id="panelStartCycle">＋ Ciclo</button><button class="btn-ghost btn-small" id="panelKmStart">＋ KM</button></div></header><div class="ops-v8-resource-row"><span class="live-mini"></span><strong>${openCycles.length} ciclo(s) em andamento</strong><small>${pendingKmLogs.length} expediente(s) aguardando KM final</small><button id="qaCloseCycle" class="btn-ghost btn-small">Finalizar ciclo</button></div>${cyclesMarkup}</article>
       </section>
     </div>
 
@@ -3703,7 +3706,7 @@ function openVehicleAddModal(record = null) {
    ========================================================= */
 export async function renderSettings() {
   const cfg = JSON.parse(localStorage.getItem('orbita_settings') || '{}');
-  const { listAutoBackups } = await import('./db.js?v=8.3');
+  const { listAutoBackups } = await import('./db.js?v=8.4');
   const autoBackups = await listAutoBackups();
   const backupReasonLabel = (reason = '') => reason === 'abertura' ? 'Abertura do sistema' : reason === 'periodico-1min' ? 'Segurança · 1 minuto' : reason ? 'Alteração salva' : 'Automático';
   const autoList = autoBackups.length
@@ -3742,13 +3745,13 @@ export async function renderSettings() {
 export function wireSettingsEvents() {
   $$('.auto-restore-btn').forEach((btn) => btn.addEventListener('click', async () => {
     if (!confirm('Restaurar esse backup automático vai substituir os dados atuais. Continuar?')) return;
-    const { restoreAutoBackup } = await import('./db.js?v=8.3');
+    const { restoreAutoBackup } = await import('./db.js?v=8.4');
     await restoreAutoBackup(btn.dataset.id);
     toast('Backup automático restaurado.', 'success');
     refreshApp();
   }));
   $('#settingsBackupBtn')?.addEventListener('click', async () => {
-    const data = await (await import('./db.js?v=8.3')).exportAll();
+    const data = await (await import('./db.js?v=8.4')).exportAll();
     downloadJSON(`orbita-backup-completo-${new Date().toISOString().slice(0,10)}.json`, data);
     toast('Backup completo gerado.', 'success');
   });
@@ -3756,12 +3759,12 @@ export function wireSettingsEvents() {
     const file = e.target.files[0];
     if (!file) return;
     if (!confirm('Isso vai substituir os dados atuais pelo conteúdo do backup. Um backup de segurança dos dados atuais será baixado antes. Continuar?')) { e.target.value = ''; return; }
-    const currentBackup = await (await import('./db.js?v=8.3')).exportAll();
+    const currentBackup = await (await import('./db.js?v=8.4')).exportAll();
     downloadJSON(`orbita-backup-seguranca-antes-restauracao-${Date.now()}.json`, currentBackup);
     try {
       const text = await file.text();
       const data = JSON.parse(text);
-      await (await import('./db.js?v=8.3')).importAll(data);
+      await (await import('./db.js?v=8.4')).importAll(data);
       toast('Backup restaurado.', 'success');
       refreshApp();
     } catch { toast('Arquivo de backup inválido.', 'error'); }
