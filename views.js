@@ -1,7 +1,7 @@
-import { Deliveries, Vehicles, Drivers, Collaborators, Neighborhoods, CostCategories, ReturnReasons, Cycles, OdometerLogs, Costs, DayClosures, AuditLog, Counters } from './db.js?v=8.2';
-import { $, $$, money, dateBR, dateTimeBR, timeBR, escapeHtml, toast, badge, STATUS_META, guardClick, downloadCSV, downloadJSON, wirePhoneMask, animateStatCards, motivationalPhrase, performanceProfile, barChartSVG, lineChartSVG, thermometerHTML } from './helpers.js?v=8.2';
-import { getEnv, getOperatorName, getOperatorRole, canPerform, closeModal, openModal, refreshApp } from './app.js?v=8.2';
-import { exportFullExcelReport } from './excel-report.js?v=8.2';
+import { Deliveries, Vehicles, Drivers, Collaborators, Neighborhoods, CostCategories, ReturnReasons, Cycles, OdometerLogs, Costs, DayClosures, AuditLog, Counters } from './db.js?v=8.3';
+import { $, $$, money, dateBR, dateTimeBR, timeBR, escapeHtml, toast, badge, STATUS_META, guardClick, downloadCSV, downloadJSON, wirePhoneMask, animateStatCards, motivationalPhrase, performanceProfile, barChartSVG, lineChartSVG, thermometerHTML } from './helpers.js?v=8.3';
+import { getEnv, getOperatorName, getOperatorRole, canPerform, closeModal, openModal, refreshApp } from './app.js?v=8.3';
+import { exportFullExcelReport } from './excel-report.js?v=8.3';
 
 const DEFAULT_OPERATIONAL_TARGETS = { startMinutes:120, arrivalMinutes:210, warningMinutes:30, successTarget:90 };
 
@@ -261,7 +261,16 @@ export async function renderCentral() {
     const releasedScheduled = agendadasLiberadasIds.has(r.id);
     const statusLabel = releasedScheduled ? 'Na loja · Agendada' : (STATUS_META[r.status]?.label || r.status);
     const displayTime = releasedScheduled ? timeBR(r.scheduledAt) : timeBR(r.entryTime);
-    return `
+    return `<article class="live-delivery-card" role="button" tabindex="0" data-delivery-id="${r.id}" data-tip="Compra #${r.purchaseNumber} · ${escapeHtml(r.clientName || 'Sem nome')} · Entrada ${timeBR(r.entryTime)} · Saída ${timeBR(r.leftStoreAt)} · Entrega ao cliente ${timeBR(r.deliveredAt || r.clientArrivalAt)} · Clique para abrir e editar.">
+      <div><strong>#${r.purchaseNumber}</strong>${r.priority === 'alta' ? '<span>ALTA</span>' : ''}${releasedScheduled ? '<span>AGENDADA</span>' : ''}</div>
+      <p>${escapeHtml(r.clientName || r.street || 'Cliente sem nome')}</p>
+      <small>${displayTime} · ${escapeHtml(statusLabel)}</small>
+    </article>`;
+  };
+
+  const queueMarkup = await miniList([...agendadas, ...naLoja, ...emRota]);
+
+  return `
     <div class="ops-v8-screen">
       <section class="ops-v8-command-head">
         <div class="ops-v8-command-copy">
@@ -306,7 +315,7 @@ export async function renderCentral() {
 
       <section class="ops-v8-queue-block">
         <header class="ops-v8-queue-head"><div><span class="ops-v8-kicker">FILA OPERACIONAL</span><h3>Entregas que precisam de decisão</h3><p>Selecione um item para abrir os detalhes ou use uma ação rápida.</p></div><label class="central-search">⌕<input id="centralQueueSearch" placeholder="Buscar compra, cliente, cupom ou endereço" /></label></header>
-        ${await miniList([...agendadas, ...naLoja, ...emRota])}
+        ${queueMarkup}
       </section>
 
       <section class="ops-v8-bottom-grid">
@@ -3694,7 +3703,7 @@ function openVehicleAddModal(record = null) {
    ========================================================= */
 export async function renderSettings() {
   const cfg = JSON.parse(localStorage.getItem('orbita_settings') || '{}');
-  const { listAutoBackups } = await import('./db.js?v=8.2');
+  const { listAutoBackups } = await import('./db.js?v=8.3');
   const autoBackups = await listAutoBackups();
   const backupReasonLabel = (reason = '') => reason === 'abertura' ? 'Abertura do sistema' : reason === 'periodico-1min' ? 'Segurança · 1 minuto' : reason ? 'Alteração salva' : 'Automático';
   const autoList = autoBackups.length
@@ -3733,13 +3742,13 @@ export async function renderSettings() {
 export function wireSettingsEvents() {
   $$('.auto-restore-btn').forEach((btn) => btn.addEventListener('click', async () => {
     if (!confirm('Restaurar esse backup automático vai substituir os dados atuais. Continuar?')) return;
-    const { restoreAutoBackup } = await import('./db.js?v=8.2');
+    const { restoreAutoBackup } = await import('./db.js?v=8.3');
     await restoreAutoBackup(btn.dataset.id);
     toast('Backup automático restaurado.', 'success');
     refreshApp();
   }));
   $('#settingsBackupBtn')?.addEventListener('click', async () => {
-    const data = await (await import('./db.js?v=8.2')).exportAll();
+    const data = await (await import('./db.js?v=8.3')).exportAll();
     downloadJSON(`orbita-backup-completo-${new Date().toISOString().slice(0,10)}.json`, data);
     toast('Backup completo gerado.', 'success');
   });
@@ -3747,12 +3756,12 @@ export function wireSettingsEvents() {
     const file = e.target.files[0];
     if (!file) return;
     if (!confirm('Isso vai substituir os dados atuais pelo conteúdo do backup. Um backup de segurança dos dados atuais será baixado antes. Continuar?')) { e.target.value = ''; return; }
-    const currentBackup = await (await import('./db.js?v=8.2')).exportAll();
+    const currentBackup = await (await import('./db.js?v=8.3')).exportAll();
     downloadJSON(`orbita-backup-seguranca-antes-restauracao-${Date.now()}.json`, currentBackup);
     try {
       const text = await file.text();
       const data = JSON.parse(text);
-      await (await import('./db.js?v=8.2')).importAll(data);
+      await (await import('./db.js?v=8.3')).importAll(data);
       toast('Backup restaurado.', 'success');
       refreshApp();
     } catch { toast('Arquivo de backup inválido.', 'error'); }

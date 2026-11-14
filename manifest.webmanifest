@@ -1,7 +1,7 @@
 {
   "name": "Órbita — Controle de Entregas",
   "short_name": "Órbita",
-  "description": "Órbita v8.2 — controle de entregas offline-first, com dashboard e relatórios.",
+  "description": "Órbita v8.3 — controle de entregas offline-first, com dashboard e relatórios.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
