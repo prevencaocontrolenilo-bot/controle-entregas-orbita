@@ -1,7 +1,7 @@
-const CACHE_PREFIX = 'orbita-v524-identidade-';
+const CACHE_PREFIX = 'orbita-v525-remodelacao-';
 const CACHE = `${CACHE_PREFIX}1`;
 const ASSETS = [
-  './', './index.html', './styles.css?v=5.24', './app.js?v=5.24', './db.js?v=5.24', './helpers.js?v=5.24', './views.js?v=5.24', './excel-report.js?v=5.24', './manifest.webmanifest?v=5.24',
+  './', './index.html', './styles.css?v=5.25', './app.js?v=5.25', './db.js?v=5.25', './helpers.js?v=5.25', './views.js?v=5.25', './excel-report.js?v=5.25', './manifest.webmanifest?v=5.25',
  
   './icons/icon-192.png', './icons/icon-512.png', './assets/delivery-courier-mascot.png',
 ];

@@ -1,6 +1,6 @@
-# Órbita — Controle de Entregas (v5.24)
+# Órbita — Controle de Entregas (v5.25)
 
-## v5.24 — saneamento técnico e refinamento operacional
+## v5.25 — saneamento técnico e refinamento operacional
 
 - Cache do PWA, módulos, Service Worker e identificação visual alinhados na mesma versão.
 - Dashboard corrigido para calcular tempo médio no cliente quando os horários estão disponíveis.
