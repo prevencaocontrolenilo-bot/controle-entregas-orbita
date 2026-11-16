@@ -5567,3 +5567,21 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
 /* Suporte: verde, sem corte na lateral. */
 .app-v8 #supportBtn,.app-v8 .support-button,.app-v8 .support-fab,.app-v8 .btn-support,.app-v8 [data-support] { background:#16a34a!important;color:#111111!important;border:3px solid #111111!important;box-shadow:3px 3px 0 #111111!important;right:18px!important;bottom:18px!important;max-width:calc(100vw - 36px)!important;box-sizing:border-box!important; }
 @media(max-width:620px){.app-v8 .forecast-strip{grid-template-columns:1fr!important;gap:14px!important}.app-v8 .forecast-strip>article{min-height:112px!important}.app-v8 #supportBtn,.app-v8 .support-button,.app-v8 .support-fab,.app-v8 .btn-support,.app-v8 [data-support]{right:12px!important;bottom:12px!important;}}
+
+
+/* v13.10 — menu fechado com ícones no desktop e gaveta no celular */
+@media(min-width:901px){
+  .app-v8.sidebar-collapsed .nav-rail,
+  .app-v8.sidebar-collapsed .nav-rail.open { width:78px!important;flex-basis:78px!important;min-width:78px!important;padding-left:10px!important;padding-right:10px!important;opacity:1!important;transform:none!important;pointer-events:auto!important; }
+  .app-v8.sidebar-collapsed .rail-brand { grid-template-columns:1fr!important;justify-items:center!important;padding-left:0!important;padding-right:0!important; }
+  .app-v8.sidebar-collapsed .rail-brand-copy,
+  .app-v8.sidebar-collapsed .rail-version,
+  .app-v8.sidebar-collapsed .rail-status span:not(.conn-dot),
+  .app-v8.sidebar-collapsed .rail-status b,
+  .app-v8.sidebar-collapsed .rail-label,
+  .app-v8.sidebar-collapsed .rail-item>span:not(.rail-icon),
+  .app-v8.sidebar-collapsed .rail-footer { display:none!important; }
+  .app-v8.sidebar-collapsed .rail-status>* { justify-content:center!important;padding:8px!important; }
+  .app-v8.sidebar-collapsed .rail-item { justify-content:center!important;padding:8px 6px!important; }
+  .app-v8.sidebar-collapsed .rail-icon { width:28px!important; }
+}
