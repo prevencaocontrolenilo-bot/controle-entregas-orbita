@@ -4597,3 +4597,23 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
     grid-template-columns: 1fr !important;
   }
 }
+
+/* v9.0 — Alinhamento estrutural da Central de Inteligência */
+.app-v8 #view:has(.intel-command-banner) > .dashboard-filter-bar,
+.app-v8 #view:has(.intel-command-banner) > .dashboard-scope,
+.app-v8 #view:has(.intel-command-banner) > .intel-command-banner,
+.app-v8 #view:has(.intel-command-banner) > .intel-hero,
+.app-v8 #view:has(.intel-command-banner) > .decision-brief,
+.app-v8 #view:has(.intel-command-banner) > .intel-section {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  align-self: stretch;
+}
+.app-v8 #view:has(.intel-command-banner) > .intel-section {
+  margin-top: 28px;
+}
+.app-v8 #view:has(.intel-command-banner) > .intel-section:first-of-type {
+  margin-top: 28px;
+}
