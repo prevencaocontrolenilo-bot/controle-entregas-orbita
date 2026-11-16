@@ -5599,3 +5599,10 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
   .app-v8.sidebar-collapsed .nav-rail.open { width:0!important;flex-basis:0!important;min-width:0!important;padding-left:0!important;padding-right:0!important;opacity:0!important;transform:translateX(-18px)!important;pointer-events:none!important;overflow:hidden!important; }
   .app-v8.sidebar-collapsed .nav-rail>* { visibility:hidden!important; }
 }
+
+
+/* v13.12 — menu desktop sem qualquer faixa residual no estado fechado */
+@media(min-width:901px){
+  .app-v8.sidebar-collapsed .nav-rail,
+  .app-v8.sidebar-collapsed .nav-rail.open { width:0!important;flex-basis:0!important;min-width:0!important;padding:0!important;border:0!important;border-right:0!important;outline:0!important;box-shadow:none!important; }
+}
