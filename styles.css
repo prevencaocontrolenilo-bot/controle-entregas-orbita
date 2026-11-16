@@ -5467,3 +5467,41 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
 .app-v8 .quick-item.active b { color:#111111!important; }
 .app-v8 #view .km-active-table button svg,
 .app-v8 #view .km-trash-details button svg { color:#111111!important;stroke:#111111!important; }
+
+
+/* v13.8 — novo layout visual do modal Registrar entrega; sem alteração funcional */
+.app-v8 #modalWrap:has(#deliveryForm) .modal { width:min(900px,calc(100vw - 28px))!important;max-width:900px!important; }
+.app-v8 #modalWrap:has(#deliveryForm) .modal-head { padding:22px 26px!important;background:var(--theme-black)!important;background-image:repeating-linear-gradient(135deg,var(--theme-black) 0 16px,var(--theme-stripe) 16px 32px)!important;border-bottom:3px solid var(--theme-action)!important; }
+.app-v8 #modalWrap:has(#deliveryForm) .modal-head h2 { color:var(--theme-white)!important;font-family:var(--font-display)!important;font-size:24px!important; }
+.app-v8 #modalWrap:has(#deliveryForm) .modal-head p { color:var(--theme-muted-light)!important;font-size:12px!important; }
+.app-v8 #modalWrap:has(#deliveryForm) .modal-body { padding:22px 26px!important;background:var(--theme-page)!important;max-height:min(68vh,720px)!important;overflow:auto!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm { display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important;align-items:start!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>label,
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.field-row { min-width:0!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.delivery-number-preview-card,
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.field-row { grid-column:1/-1!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.delivery-number-preview-card { display:flex!important;align-items:center!important;justify-content:space-between!important;gap:22px!important;padding:16px 18px!important;margin:0 0 2px!important;background:var(--theme-action-soft)!important;border:2px solid var(--theme-black)!important;border-left:8px solid var(--theme-action)!important;border-radius:14px!important;box-shadow:3px 3px 0 var(--theme-black)!important; }
+.app-v8 #modalWrap:has(#deliveryForm) .delivery-number-preview-card small { display:block!important;color:var(--theme-gray)!important;font-size:10px!important;font-weight:800!important;letter-spacing:.12em!important; }
+.app-v8 #modalWrap:has(#deliveryForm) .delivery-number-preview-card strong { display:block!important;margin-top:4px!important;color:var(--theme-black)!important;font-family:var(--font-display)!important;font-size:28px!important; }
+.app-v8 #modalWrap:has(#deliveryForm) .delivery-number-preview-card p { max-width:470px!important;margin:0!important;color:var(--theme-gray)!important;font-size:11px!important;line-height:1.45!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>label { display:grid!important;gap:7px!important;align-content:start!important;color:var(--theme-black)!important;font-size:11px!important;font-weight:800!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>label:nth-of-type(1),
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>label:nth-of-type(4) { grid-column:1/-1!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>label:nth-of-type(2),
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>label:nth-of-type(3),
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>label:nth-of-type(5),
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>label:nth-of-type(6) { grid-column:span 1!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>label:nth-of-type(8) { grid-column:1/-1!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.field-row { display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important;padding-top:3px!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.field-row-date-time { padding:14px!important;background:var(--theme-white)!important;border:2px solid var(--theme-black)!important;border-radius:14px!important;box-shadow:3px 3px 0 var(--theme-black)!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.field-row-date-time .field-row-help { grid-column:1/-1!important;margin:0!important;color:var(--theme-gray)!important;font-size:10px!important;line-height:1.4!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm input,
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm select,
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm textarea { width:100%!important;min-height:42px!important;padding:10px 12px!important;background:var(--theme-white)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important;border-radius:10px!important;box-sizing:border-box!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm textarea { min-height:76px!important;resize:vertical!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm select:focus,
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm input:focus,
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm textarea:focus { border-color:var(--theme-action)!important;box-shadow:0 0 0 3px var(--theme-action)!important; }
+.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm .hidden { display:none!important; }
+.app-v8 #modalWrap:has(#deliveryForm) .modal-actions { padding:16px 26px 22px!important;background:var(--theme-page)!important;border-top:2px solid var(--theme-black)!important;gap:10px!important; }
+@media(max-width:640px){.app-v8 #modalWrap:has(#deliveryForm) .modal-head,.app-v8 #modalWrap:has(#deliveryForm) .modal-body,.app-v8 #modalWrap:has(#deliveryForm) .modal-actions{padding-left:16px!important;padding-right:16px!important}.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm{grid-template-columns:1fr!important}.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>label,.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.field-row{grid-column:1/-1!important}.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.field-row{grid-template-columns:1fr!important}.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.delivery-number-preview-card{display:grid!important;gap:10px!important}.app-v8 #modalWrap:has(#deliveryForm) .modal-head h2{font-size:20px!important}}
