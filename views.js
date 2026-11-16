@@ -1,7 +1,7 @@
-import { Deliveries, Vehicles, Drivers, Collaborators, Neighborhoods, CostCategories, ReturnReasons, Cycles, OdometerLogs, Costs, DayClosures, AuditLog, Counters } from './db.js?v=11.2';
-import { $, $$, money, dateBR, dateTimeBR, timeBR, escapeHtml, toast, badge, STATUS_META, guardClick, downloadCSV, downloadJSON, wirePhoneMask, animateStatCards, motivationalPhrase, performanceProfile, barChartSVG, lineChartSVG, thermometerHTML } from './helpers.js?v=11.2';
-import { getEnv, getOperatorName, getOperatorRole, canPerform, closeModal, openModal, refreshApp } from './app.js?v=11.2';
-import { exportFullExcelReport } from './excel-report.js?v=11.2';
+import { Deliveries, Vehicles, Drivers, Collaborators, Neighborhoods, CostCategories, ReturnReasons, Cycles, OdometerLogs, Costs, DayClosures, AuditLog, Counters } from './db.js?v=11.3';
+import { $, $$, money, dateBR, dateTimeBR, timeBR, escapeHtml, toast, badge, STATUS_META, guardClick, downloadCSV, downloadJSON, wirePhoneMask, animateStatCards, motivationalPhrase, performanceProfile, barChartSVG, lineChartSVG, thermometerHTML } from './helpers.js?v=11.3';
+import { getEnv, getOperatorName, getOperatorRole, canPerform, closeModal, openModal, refreshApp } from './app.js?v=11.3';
+import { exportFullExcelReport } from './excel-report.js?v=11.3';
 
 const DEFAULT_OPERATIONAL_TARGETS = { startMinutes:120, arrivalMinutes:210, warningMinutes:30, successTarget:90 };
 
@@ -286,9 +286,23 @@ export async function renderCentral() {
             <button class="btn-ghost" id="qaCloseDay">🗓 Fechar dia</button>
           </div>
         </div>
-        <div class="ops-v8-score" id="opsScoreConsole" role="button" tabindex="0" data-tip="O índice combina conclusão, pontualidade e qualidade.">
+        <div class="ops-v8-score" id="opsScoreConsole" role="button" tabindex="0" data-score="${score}" data-completion="${Math.round(completion * 100)}" data-punctuality="${Math.round(punctuality * 100)}" data-quality="${Math.round(quality * 100)}" data-tip="Clique para entender o Pulso da operação.">
           <div class="ops-v8-score-ring" style="--score:${score};--score-color:${profile.color}"><strong>${score}</strong><small>/100</small></div>
           <div><span>PULSO DA OPERAÇÃO</span><b>${profile.label}</b><small>${pendingToday} pendência(s) exigem ação</small></div>
+        </div>
+      </section>
+
+      <section class="ops-v8-quick-actions" aria-label="Ações rápidas">
+        <header><div><span class="ops-v8-kicker">CENTRAL DE AÇÕES</span><h3>Ações rápidas</h3></div><small>Execute as rotinas da operação sem procurar no menu.</small></header>
+        <div class="ops-v8-quick-grid">
+          <button class="ops-v8-quick-primary" id="qaQuickNewDelivery"><b>01</b><span>Nova entrega</span></button>
+          <button id="qaQuickStartCycle"><b>02</b><span>Início de ciclo</span></button>
+          <button id="qaQuickArrival"><b>03</b><span>Entregue ao cliente</span></button>
+          <button id="qaQuickReturn"><b>04</b><span>Entrega retornou</span></button>
+          <button id="qaQuickCloseCycle"><b>05</b><span>Finalizar ciclo</span></button>
+          <button id="qaQuickKm"><b>06</b><span>KM do dia</span></button>
+          <button id="qaQuickCost"><b>07</b><span>Custo</span></button>
+          <button id="qaQuickCloseDay"><b>08</b><span>Fechar dia</span></button>
         </div>
       </section>
 
@@ -459,15 +473,22 @@ export function wireCentralEvents() {
     card.addEventListener('keydown', (e) => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); open(); } });
   });
   $('#qaNewDelivery')?.addEventListener('click', () => openDeliveryModal());
+  $('#qaQuickNewDelivery')?.addEventListener('click', () => openDeliveryModal());
   $('#recalculateDayNumbersBtn')?.addEventListener('click', () => openRecalculateDayNumbersModal());
   $('#recoverRouteEditBtn')?.addEventListener('click', () => openRouteEditRecoveryModal());
   $('#qaStartCycle')?.addEventListener('click', () => openStartCycleModal());
+  $('#qaQuickStartCycle')?.addEventListener('click', () => openStartCycleModal());
   $('#qaArrival')?.addEventListener('click', () => openArrivalPicker());
+  $('#qaQuickArrival')?.addEventListener('click', () => openArrivalPicker());
   $('#qaReturn')?.addEventListener('click', () => openReturnPicker());
+  $('#qaQuickReturn')?.addEventListener('click', () => openReturnPicker());
   $('#returnSpotlightBtn')?.addEventListener('click', () => openReturnPicker());
   $('#qaKm')?.addEventListener('click', () => openKmStartModal());
+  $('#qaQuickKm')?.addEventListener('click', () => openKmStartModal());
   $('#qaCost')?.addEventListener('click', () => openCostModal());
+  $('#qaQuickCost')?.addEventListener('click', () => openCostModal());
   $('#qaCloseDay')?.addEventListener('click', () => openDayCloseAssistant());
+  $('#qaQuickCloseDay')?.addEventListener('click', () => openDayCloseAssistant());
   $('#heroKmAction')?.addEventListener('click', async (e) => {
     if (Number(e.currentTarget.dataset.missing || 0) > 0) return openKmStartModal();
     const today = localDateKey();
@@ -496,7 +517,15 @@ export function wireCentralEvents() {
     card.addEventListener('click', action);
     card.addEventListener('keydown', (e) => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); action(); } });
   };
-  activateCard('#opsScoreConsole', () => $('#performanceExplainBtn')?.click());
+  activateCard('#opsScoreConsole', () => {
+    const card = $('#opsScoreConsole');
+    openModal({
+      title: 'Pulso da operação',
+      subtitle: 'O indicador combina conclusão, pontualidade e qualidade dos dados.',
+      body: `<div class="performance-breakdown"><div><span>Conclusão</span><strong>${card.dataset.completion}%</strong></div><div><span>Pontualidade</span><strong>${card.dataset.punctuality}%</strong></div><div><span>Qualidade</span><strong>${card.dataset.quality}%</strong></div><p>Índice atual: <strong>${card.dataset.score}/100</strong>. Clique nas áreas de SLA, resultado ou use as ações rápidas para investigar e agir.</p></div>`,
+      actions: [{ label: 'Entendi', kind: 'primary', onClick: closeModal }],
+    });
+  });
   activateCard('#opsSlaConsole', () => {
     const card=$('#opsSlaConsole');
     openCentralInsightDrawer('Tempos e SLA de hoje',`<div class="drawer-kpi-grid"><div><small>Atraso de saída</small><strong>${card.dataset.startLate}</strong><span>limite 2 horas</span></div><div><small>Atraso de chegada</small><strong>${card.dataset.arrivalLate}</strong><span>limite 3h30</span></div><div><small>Perto do limite</small><strong>${card.dataset.risk}</strong><span>aviso 30 min antes</span></div><div><small>Tempo completo médio</small><strong>${card.dataset.avgTotal}</strong><span>entrada até finalização</span></div></div><button class="btn-primary drawer-nav-dashboard">Investigar no Centro de Inteligência</button>`);
@@ -513,12 +542,14 @@ export function wireCentralEvents() {
   });
   $('#panelStartCycle')?.addEventListener('click', () => openStartCycleModal());
   $('#panelKmStart')?.addEventListener('click', () => openKmStartModal());
-  $('#qaCloseCycle')?.addEventListener('click', async () => {
+  const closeCycleAction = async () => {
     const cycles = (await Cycles.all()).filter((c) => c.environment === getEnv() && c.status === 'aberto' && !c.deletedAt);
     if (!cycles.length) return toast('Não há ciclo aberto no momento.', 'error');
     if (cycles.length === 1) return openCloseCycleModal(cycles[0]);
     openCyclePicker(cycles);
-  });
+  };
+  $('#qaCloseCycle')?.addEventListener('click', closeCycleAction);
+  $('#qaQuickCloseCycle')?.addEventListener('click', closeCycleAction);
   $$('.central-cycle-edit').forEach((btn) => btn.addEventListener('click', async () => {
     const cycle = await Cycles.get(btn.dataset.id);
     if (cycle) openEditCycleDeliveriesModal(cycle);
@@ -3708,7 +3739,7 @@ function openVehicleAddModal(record = null) {
    ========================================================= */
 export async function renderSettings() {
   const cfg = JSON.parse(localStorage.getItem('orbita_settings') || '{}');
-  const { listAutoBackups } = await import('./db.js?v=11.2');
+  const { listAutoBackups } = await import('./db.js?v=11.3');
   const autoBackups = await listAutoBackups();
   const backupReasonLabel = (reason = '') => reason === 'abertura' ? 'Abertura do sistema' : reason === 'periodico-1min' ? 'Segurança · 1 minuto' : reason ? 'Alteração salva' : 'Automático';
   const autoList = autoBackups.length
@@ -3747,13 +3778,13 @@ export async function renderSettings() {
 export function wireSettingsEvents() {
   $$('.auto-restore-btn').forEach((btn) => btn.addEventListener('click', async () => {
     if (!confirm('Restaurar esse backup automático vai substituir os dados atuais. Continuar?')) return;
-    const { restoreAutoBackup } = await import('./db.js?v=11.2');
+    const { restoreAutoBackup } = await import('./db.js?v=11.3');
     await restoreAutoBackup(btn.dataset.id);
     toast('Backup automático restaurado.', 'success');
     refreshApp();
   }));
   $('#settingsBackupBtn')?.addEventListener('click', async () => {
-    const data = await (await import('./db.js?v=11.2')).exportAll();
+    const data = await (await import('./db.js?v=11.3')).exportAll();
     downloadJSON(`orbita-backup-completo-${new Date().toISOString().slice(0,10)}.json`, data);
     toast('Backup completo gerado.', 'success');
   });
@@ -3761,12 +3792,12 @@ export function wireSettingsEvents() {
     const file = e.target.files[0];
     if (!file) return;
     if (!confirm('Isso vai substituir os dados atuais pelo conteúdo do backup. Um backup de segurança dos dados atuais será baixado antes. Continuar?')) { e.target.value = ''; return; }
-    const currentBackup = await (await import('./db.js?v=11.2')).exportAll();
+    const currentBackup = await (await import('./db.js?v=11.3')).exportAll();
     downloadJSON(`orbita-backup-seguranca-antes-restauracao-${Date.now()}.json`, currentBackup);
     try {
       const text = await file.text();
       const data = JSON.parse(text);
-      await (await import('./db.js?v=11.2')).importAll(data);
+      await (await import('./db.js?v=11.3')).importAll(data);
       toast('Backup restaurado.', 'success');
       refreshApp();
     } catch { toast('Arquivo de backup inválido.', 'error'); }
