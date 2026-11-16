@@ -5384,3 +5384,27 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
 .app-v8 .intel-command-banner>span:first-child { color:var(--theme-action)!important; }
 .app-v8 .ops-v8-command-head button,
 .app-v8 .intel-command-banner button { color:var(--theme-black)!important; }
+
+
+/* v13.3 — contraste da Central de Inteligência */
+.app-v8 .intel-command-banner .intel-command-copy>span { color:var(--theme-action)!important; }
+.app-v8 .intel-command-banner .intel-command-copy h2 { color:var(--theme-white)!important; }
+.app-v8 .intel-command-banner .intel-command-copy p { color:var(--theme-muted-light)!important; }
+.app-v8 .intel-command-signals article small,
+.app-v8 .intel-command-signals article strong,
+.app-v8 .intel-command-signals article span { color:var(--theme-black)!important; }
+.app-v8 .intel-hero-metric small,
+.app-v8 .intel-hero-metric strong,
+.app-v8 .intel-hero-metric span,
+.app-v8 .intel-hero-metric p { color:var(--theme-black)!important; }
+.app-v8 .intel-section-head>div>span,
+.app-v8 .intel-section-head>small,
+.app-v8 .chart-title span,
+.app-v8 .chart-title small { color:var(--theme-gray)!important; }
+.app-v8 .intel-section-head h2,
+.app-v8 .chart-title strong { color:var(--theme-black)!important; }
+.app-v8 .decision-brief header span,
+.app-v8 .decision-brief header small { color:var(--theme-gray)!important; }
+.app-v8 .decision-brief header strong,
+.app-v8 .decision-brief button strong,
+.app-v8 .decision-brief button span { color:var(--theme-black)!important; }
