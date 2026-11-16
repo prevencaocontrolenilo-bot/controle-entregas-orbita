@@ -1,6 +1,6 @@
-import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=12.0';
-import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=12.0';
-import * as V from './views.js?v=12.0';
+import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=11.2';
+import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=11.2';
+import * as V from './views.js?v=11.2';
 
 let currentView = 'central';
 let currentRegistryTab = 'vehicles';
@@ -439,7 +439,7 @@ async function render() {
 }
 
 async function updateBadges() {
-  const { Deliveries, Cycles } = await import('./db.js?v=12.0');
+  const { Deliveries, Cycles } = await import('./db.js?v=11.2');
   const rows = await Deliveries.active(environment);
   $('#pendingBadge').textContent = rows.filter((r) => r.status === 'na_loja').length;
   const trashed = await Deliveries.trashed(environment);
@@ -462,7 +462,7 @@ if ('serviceWorker' in navigator) {
     refreshingForUpdate = true;
     window.location.reload();
   });
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v12.0-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v11.2-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
 }
 
 boot();
