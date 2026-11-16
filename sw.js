@@ -1,7 +1,7 @@
 const CACHE_PREFIX = 'orbita-v527-nova-cara-';
 const CACHE = `${CACHE_PREFIX}1`;
 const ASSETS = [
-  './', './index.html', './styles.css?v=10.3', './app.js?v=10.3', './db.js?v=10.3', './helpers.js?v=10.3', './views.js?v=10.3', './excel-report.js?v=10.3', './manifest.webmanifest?v=10.3',
+  './', './index.html', './styles.css?v=10.4', './app.js?v=10.4', './db.js?v=10.4', './helpers.js?v=10.4', './views.js?v=10.4', './excel-report.js?v=10.4', './manifest.webmanifest?v=10.4',
  
   './icons/icon-192.png', './icons/icon-512.png', './assets/delivery-courier-mascot.png',
 ];
