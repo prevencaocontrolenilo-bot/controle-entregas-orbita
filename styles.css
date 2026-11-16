@@ -5362,3 +5362,25 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
 .app-v8 .conn-dot.online,.app-v8 .status-online,.app-v8 .live-dot { background:var(--theme-green)!important; }
 .app-v8 .error,.app-v8 .field-error,.app-v8 .form-error { color:var(--theme-red-text)!important; }
 .app-v8 #supportBtn,.app-v8 .support-button,.app-v8 .support-fab,.app-v8 .btn-support,.app-v8 [data-support] { background:var(--theme-green)!important;color:var(--theme-black)!important;border:3px solid var(--theme-black)!important; }
+
+
+/* v13.2 — contraste dos painéis pretos */
+.app-v8 .ops-v8-command-head h1,
+.app-v8 .ops-v8-command-head h2,
+.app-v8 .ops-v8-command-head h3,
+.app-v8 .ops-v8-command-head strong,
+.app-v8 .intel-command-banner h1,
+.app-v8 .intel-command-banner h2,
+.app-v8 .intel-command-banner h3,
+.app-v8 .intel-command-banner strong { color:var(--theme-white)!important; }
+.app-v8 .ops-v8-command-head p,
+.app-v8 .ops-v8-command-head small,
+.app-v8 .ops-v8-command-head span:not(.ops-v8-kicker),
+.app-v8 .intel-command-banner p,
+.app-v8 .intel-command-banner small,
+.app-v8 .intel-command-banner span:not(.intel-command-kicker) { color:var(--theme-muted-light)!important; }
+.app-v8 .ops-v8-command-head .ops-v8-kicker,
+.app-v8 .intel-command-banner .intel-command-kicker,
+.app-v8 .intel-command-banner>span:first-child { color:var(--theme-action)!important; }
+.app-v8 .ops-v8-command-head button,
+.app-v8 .intel-command-banner button { color:var(--theme-black)!important; }
