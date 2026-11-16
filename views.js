@@ -1,7 +1,7 @@
 import { Deliveries, Vehicles, Drivers, Collaborators, Neighborhoods, CostCategories, ReturnReasons, Cycles, OdometerLogs, Costs, DayClosures, AuditLog, Counters } from './db.js?v=13.12';
 import { $, $$, money, dateBR, dateTimeBR, timeBR, escapeHtml, toast, badge, STATUS_META, guardClick, downloadCSV, downloadJSON, wirePhoneMask, animateStatCards, motivationalPhrase, performanceProfile, barChartSVG, lineChartSVG, thermometerHTML } from './helpers.js?v=13.12';
 import { getEnv, getOperatorName, getOperatorRole, canPerform, closeModal, openModal, refreshApp } from './app.js?v=13.12';
-import { exportFullExcelReport } from './excel-report.js?v=13.12';
+import { exportFullExcelReport } from './excel-report.js?v=13.13';
 
 const DEFAULT_OPERATIONAL_TARGETS = { startMinutes:120, arrivalMinutes:210, warningMinutes:30, successTarget:90 };
 
@@ -3221,7 +3221,7 @@ export async function renderReports() {
       </div>
       <div class="stat-card">
         <small>Relatório analítico</small>
-        <p style="font-size:12.5px;color:var(--text-muted);margin:8px 0">Excel completo no mesmo padrão do relatório de referência: um único arquivo com múltiplas abas analíticas. Os CSVs avulsos continuam disponíveis abaixo.</p>
+        <p style="font-size:12.5px;color:var(--text-muted);margin:8px 0">Dossiê Excel completo: painel executivo com comparações e barras visuais, 31 abas analíticas tratadas e detalhamento operacional. Os CSVs avulsos continuam disponíveis abaixo.</p>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="btn-ghost btn-small export-btn" data-kind="resumo">Resumo executivo</button>
           <button class="btn-ghost btn-small export-btn" data-kind="deliveries">Entregas</button>
