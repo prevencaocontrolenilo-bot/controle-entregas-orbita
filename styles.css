@@ -5421,3 +5421,17 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
 .app-v8 .report-choice-grid .stat-card { background:var(--theme-white)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important;box-shadow:4px 4px 0 var(--theme-black)!important; }
 .app-v8 .report-choice-grid .stat-card small,.app-v8 .report-choice-grid .stat-card p { color:var(--theme-gray)!important; }
 .app-v8 .report-choice-grid .stat-card button { color:var(--theme-black)!important; }
+
+
+/* v13.5 — legibilidade dos sinais e previsões da Inteligência */
+.app-v8 .intel-command-signals article { background:var(--theme-white)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important; }
+.app-v8 .intel-command-signals article small { color:var(--theme-gray)!important;font-weight:800!important; }
+.app-v8 .intel-command-signals article strong { color:var(--theme-black)!important;font-family:var(--font-display)!important; }
+.app-v8 .intel-command-signals article span { color:var(--theme-black)!important; }
+.app-v8 .intel-command-signals article.signal-good { border-top:4px solid var(--theme-green)!important; }
+.app-v8 .intel-command-signals article.signal-alert,
+.app-v8 .intel-command-signals article.signal-warning { border-top:4px solid var(--theme-red)!important; }
+.app-v8 .forecast-strip>article { background:var(--theme-white)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important;box-shadow:3px 3px 0 var(--theme-black)!important; }
+.app-v8 .forecast-strip>article span { color:var(--theme-gray)!important;font-weight:800!important; }
+.app-v8 .forecast-strip>article strong { color:var(--theme-black)!important;font-family:var(--font-display)!important; }
+.app-v8 .forecast-strip>article small { color:var(--theme-gray)!important; }
