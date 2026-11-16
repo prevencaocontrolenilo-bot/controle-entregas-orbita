@@ -1,7 +1,7 @@
-import { Deliveries, Vehicles, Drivers, Collaborators, Neighborhoods, CostCategories, ReturnReasons, Cycles, OdometerLogs, Costs, DayClosures, AuditLog, Counters } from './db.js?v=8.7';
-import { $, $$, money, dateBR, dateTimeBR, timeBR, escapeHtml, toast, badge, STATUS_META, guardClick, downloadCSV, downloadJSON, wirePhoneMask, animateStatCards, motivationalPhrase, performanceProfile, barChartSVG, lineChartSVG, thermometerHTML } from './helpers.js?v=8.7';
-import { getEnv, getOperatorName, getOperatorRole, canPerform, closeModal, openModal, refreshApp } from './app.js?v=8.7';
-import { exportFullExcelReport } from './excel-report.js?v=8.7';
+import { Deliveries, Vehicles, Drivers, Collaborators, Neighborhoods, CostCategories, ReturnReasons, Cycles, OdometerLogs, Costs, DayClosures, AuditLog, Counters } from './db.js?v=8.8';
+import { $, $$, money, dateBR, dateTimeBR, timeBR, escapeHtml, toast, badge, STATUS_META, guardClick, downloadCSV, downloadJSON, wirePhoneMask, animateStatCards, motivationalPhrase, performanceProfile, barChartSVG, lineChartSVG, thermometerHTML } from './helpers.js?v=8.8';
+import { getEnv, getOperatorName, getOperatorRole, canPerform, closeModal, openModal, refreshApp } from './app.js?v=8.8';
+import { exportFullExcelReport } from './excel-report.js?v=8.8';
 
 const DEFAULT_OPERATIONAL_TARGETS = { startMinutes:120, arrivalMinutes:210, warningMinutes:30, successTarget:90 };
 
@@ -2976,12 +2976,14 @@ export async function renderDashboard() {
       </div>
     </section>
 
-    <section class="intel-section" data-dashboard-group="fluxo">
+    <section class="intel-section intel-flow-section" data-dashboard-group="fluxo">
       <div class="intel-section-head"><div><span>FLUXO OPERACIONAL</span><h2>Volume, perfil e exceções</h2></div><small>todos os movimentos</small></div>
-      <div class="intel-metric-grid">
+      <div class="intel-flow-lead">
         ${metric('Ocorrências', problems.length, 'Retornos, reentregas e cancelamentos.', problems.length?'bad':'good')}
         ${metric('Taxa de retorno', `${returnRate.toFixed(1)}%`, 'Ocorrências divididas pelo total.')}
         ${metric('Primeira tentativa', `${firstAttemptRate}%`, 'Finalizações sem retorno ou reentrega no histórico.', 'good')}
+      </div>
+      <div class="intel-flow-support">
         ${metric('Retiradas na loja', withdrawn, 'Entregas retiradas diretamente na loja.')}
         ${metric('Entregas grandes', largeDeliveries, 'Entregas classificadas como grandes.')}
         ${metric('Média por ciclo', avgPerCycle, 'Finalizadas divididas pelos ciclos fechados.')}
@@ -2989,7 +2991,7 @@ export async function renderDashboard() {
         ${metric('Saídas no prazo', `${startOnTimeRate}%`, 'Percentual avaliado que saiu em até 2 horas.', startOnTimeRate>=operationalTargets().successTarget?'good':'warning')}
         ${metric('Chegadas no prazo', `${arrivalOnTimeRate}%`, 'Percentual avaliado que chegou em até 3 horas e 30 minutos.', arrivalOnTimeRate>=operationalTargets().successTarget?'good':'warning')}
       </div>
-      <div class="dashboard-chart-grid">
+      <div class="dashboard-chart-grid intel-flow-charts">
         <article class="chart-card"><div class="chart-title"><div><span>SEMANA</span><strong>Demanda por dia</strong></div><small>volume</small></div>${barChartSVG({labels:weekdayNames,values:byWeekday,color:'var(--status-entregue)'})}</article>
         <article class="chart-card"><div class="chart-title"><div><span>HORÁRIOS</span><strong>Faixas de entrada</strong></div><small>volume</small></div>${barChartSVG({labels:hourWindows.map(x=>x[0]),values:hourWindows.map(x=>x[1]),color:'var(--ink-2)'})}</article>
       </div>
@@ -3706,7 +3708,7 @@ function openVehicleAddModal(record = null) {
    ========================================================= */
 export async function renderSettings() {
   const cfg = JSON.parse(localStorage.getItem('orbita_settings') || '{}');
-  const { listAutoBackups } = await import('./db.js?v=8.7');
+  const { listAutoBackups } = await import('./db.js?v=8.8');
   const autoBackups = await listAutoBackups();
   const backupReasonLabel = (reason = '') => reason === 'abertura' ? 'Abertura do sistema' : reason === 'periodico-1min' ? 'Segurança · 1 minuto' : reason ? 'Alteração salva' : 'Automático';
   const autoList = autoBackups.length
@@ -3745,13 +3747,13 @@ export async function renderSettings() {
 export function wireSettingsEvents() {
   $$('.auto-restore-btn').forEach((btn) => btn.addEventListener('click', async () => {
     if (!confirm('Restaurar esse backup automático vai substituir os dados atuais. Continuar?')) return;
-    const { restoreAutoBackup } = await import('./db.js?v=8.7');
+    const { restoreAutoBackup } = await import('./db.js?v=8.8');
     await restoreAutoBackup(btn.dataset.id);
     toast('Backup automático restaurado.', 'success');
     refreshApp();
   }));
   $('#settingsBackupBtn')?.addEventListener('click', async () => {
-    const data = await (await import('./db.js?v=8.7')).exportAll();
+    const data = await (await import('./db.js?v=8.8')).exportAll();
     downloadJSON(`orbita-backup-completo-${new Date().toISOString().slice(0,10)}.json`, data);
     toast('Backup completo gerado.', 'success');
   });
@@ -3759,12 +3761,12 @@ export function wireSettingsEvents() {
     const file = e.target.files[0];
     if (!file) return;
     if (!confirm('Isso vai substituir os dados atuais pelo conteúdo do backup. Um backup de segurança dos dados atuais será baixado antes. Continuar?')) { e.target.value = ''; return; }
-    const currentBackup = await (await import('./db.js?v=8.7')).exportAll();
+    const currentBackup = await (await import('./db.js?v=8.8')).exportAll();
     downloadJSON(`orbita-backup-seguranca-antes-restauracao-${Date.now()}.json`, currentBackup);
     try {
       const text = await file.text();
       const data = JSON.parse(text);
-      await (await import('./db.js?v=8.7')).importAll(data);
+      await (await import('./db.js?v=8.8')).importAll(data);
       toast('Backup restaurado.', 'success');
       refreshApp();
     } catch { toast('Arquivo de backup inválido.', 'error'); }
