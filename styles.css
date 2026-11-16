@@ -5460,3 +5460,10 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
 .app-v8 #view [class*="panel"] svg { color:#ffee00!important;stroke:#ffee00!important; }
 .app-v8 #view .km-active-table .btn-ghost,
 .app-v8 #view .km-active-table .btn-small { background:#ffffff!important;color:#111111!important;border-color:#111111!important; }
+
+
+/* v13.7 — fechamento da varredura de contraste */
+.app-v8 .quick-item b,
+.app-v8 .quick-item.active b { color:#111111!important; }
+.app-v8 #view .km-active-table button svg,
+.app-v8 #view .km-trash-details button svg { color:#111111!important;stroke:#111111!important; }
