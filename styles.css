@@ -5306,3 +5306,59 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
 .app-v8 svg .axis,.app-v8 svg .grid,.app-v8 .chart-grid-line,.app-v8 .chart-axis-line { stroke:var(--theme-black)!important; }
 .app-v8 .chart-axis-label,.app-v8 .chart-value-label { fill:var(--theme-black)!important; }
 @media(max-width:620px){.app-v8 button{min-height:42px;}.app-v8 .card,.app-v8 .chart-card,.app-v8 .table-wrap,.app-v8 .form-section{border-radius:14px!important;box-shadow:3px 3px 0 var(--theme-black)!important;}}
+
+
+/* v13.1 — especificação definitiva de cores */
+:root {
+  --theme-neutral:#6b7280;
+  --theme-menu-hover:#1f1f1f;
+  --theme-menu-count:#2a2a2a;
+  --theme-menu-border:#333333;
+}
+
+/* Superfície: creme nas páginas, branco nos componentes e amarelo-suave nos destaques */
+.app-v8,.app-v8 .app-main,.app-v8 .workspace-view,.app-v8 .view { background:var(--theme-page)!important;color:var(--theme-black)!important; }
+.app-v8 .card,.app-v8 .chart-card,.app-v8 .ranking-panel,.app-v8 .driver-table-panel,.app-v8 .report-card,.app-v8 .settings-card,.app-v8 .table-wrap,.app-v8 .registry-workbench,.app-v8 .form-section,.app-v8 .dashboard-filter-bar,.app-v8 .dashboard-scope,.app-v8 .ops-panel,.app-v8 .ops-flow-console,.app-v8 .ops-finance-console { background:var(--theme-white)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important;box-shadow:4px 4px 0 var(--theme-black)!important; }
+.app-v8 .intel-metric,.app-v8 .intel-hero>article,.app-v8 .decision-brief,.app-v8 .forecast-strip,.app-v8 .ops-score-console,.app-v8 .ops-pulse-console,.app-v8 .ops-v8-quick-actions,.app-v8 .ops-v8-live-panel,.app-v8 .ops-v8-priority-panel,.app-v8 .ops-v8-queue-block,.app-v8 .ops-v8-cycle-panel,.app-v8 .ops-v8-capacity { background:var(--theme-action-soft)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important;box-shadow:4px 4px 0 var(--theme-black)!important; }
+.app-v8 input,.app-v8 select,.app-v8 textarea,.app-v8 .btn-ghost,.app-v8 .btn-small,.app-v8 .quick-all,.app-v8 .clock-chip,.app-v8 .version-chip,.app-v8 .header-menu { background:var(--theme-white)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important; }
+.app-v8 table tbody tr:nth-child(even) td { background:var(--theme-page)!important; }
+.app-v8 table tbody tr:nth-child(odd) td { background:var(--theme-white)!important; }
+
+/* Amarelo só para ação, item ativo, faixa, etiqueta, ícone, número e destaque */
+.app-v8 .app-header,.app-v8 .header-line,.app-v8 .quick-nav,.app-v8 .knowledge-bar { background:var(--theme-action)!important;color:var(--theme-black)!important;border-color:var(--theme-black)!important; }
+.app-v8 .btn-primary,.app-v8 .header-create,.app-v8 .rail-item.active,.app-v8 .quick-item.active,.app-v8 .dashboard-period-btn.active,.app-v8 .dashboard-scope button.active,.app-v8 .filter-active { background:var(--theme-action)!important;color:var(--theme-black)!important;border-color:var(--theme-black)!important; }
+.app-v8 .ops-v8-quick-grid button { background:var(--theme-white)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important;box-shadow:3px 3px 0 var(--theme-black)!important; }
+.app-v8 .ops-v8-quick-grid button b,.app-v8 .ops-v8-quick-grid button .quick-number,.app-v8 .ops-v8-quick-grid button .quick-icon { color:var(--theme-action)!important; }
+.app-v8 .ops-v8-quick-grid button span { color:var(--theme-black)!important; }
+.app-v8 .ops-v8-quick-grid button:hover,.app-v8 .ops-v8-quick-grid button:focus-visible { background:var(--theme-action)!important;color:var(--theme-black)!important; }
+.app-v8 .ops-v8-quick-grid button:hover *,.app-v8 .ops-v8-quick-grid button:focus-visible * { color:var(--theme-black)!important; }
+.app-v8 .rail-icon,.app-v8 .rail-label,.app-v8 .eyebrow,.app-v8 .eyebrow span,.app-v8 .intel-command-banner strong,.app-v8 .ops-v8-command-head strong { color:var(--theme-action)!important; }
+.app-v8 .command-pulse,.app-v8 .pulse-dot { background:var(--theme-action)!important; }
+.app-v8 .badge.pendente,.app-v8 .badge.transito,.app-v8 .status-warning,.app-v8 .state-warning { background:var(--theme-action-soft)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important; }
+
+/* Menu lateral: listra, hover, contadores e separadores */
+.app-v8 .nav-rail,.app-v8 .rail-brand,.app-v8 .rail-status,.app-v8 .rail-footer { background-color:var(--theme-black)!important;background-image:repeating-linear-gradient(135deg,var(--theme-black) 0 16px,var(--theme-stripe) 16px 32px)!important; }
+.app-v8 .rail-toggle,.app-v8 .mode-switch,.app-v8 .station-chip,.app-v8 .connection-state { background:var(--theme-stripe)!important;color:var(--theme-white)!important;border-color:var(--theme-menu-border)!important; }
+.app-v8 .rail-toggle { border-color:var(--theme-action)!important; }
+.app-v8 .rail-item:hover { background:var(--theme-menu-hover)!important;border-color:var(--theme-action)!important;color:var(--theme-white)!important; }
+.app-v8 .rail-item em { background:var(--theme-menu-count)!important;color:var(--theme-muted-light)!important;border-color:var(--theme-menu-border)!important; }
+.app-v8 .rail-item em.critical,.app-v8 .rail-item em.urgent { background:var(--theme-red)!important;color:var(--theme-white)!important;border-color:var(--theme-red)!important; }
+.app-v8 .rail-nav .rail-label { border-color:var(--theme-menu-border)!important; }
+.app-v8 .rail-brand,.app-v8 .rail-footer { border-color:var(--theme-menu-border)!important; }
+.app-v8 .station-chip,.app-v8 .connection-state { border-color:var(--theme-menu-border)!important; }
+
+/* Contraste tipográfico: textos claros em preto/amarelo; textos de apoio nos painéis escuros */
+.app-v8 .app-main h1,.app-v8 .app-main h2,.app-v8 .app-main h3,.app-v8 .app-main h4,.app-v8 .app-main p,.app-v8 .app-main label,.app-v8 .app-main span,.app-v8 .app-main strong,.app-v8 .app-main b,.app-v8 .app-main td,.app-v8 .app-main th { color:var(--theme-black)!important; }
+.app-v8 .app-main small,.app-v8 .field-help,.app-v8 .delivery-times,.app-v8 .nq-helper,.app-v8 .knowledge-heading small { color:var(--theme-gray)!important; }
+.app-v8 .nav-rail h1,.app-v8 .nav-rail h2,.app-v8 .nav-rail h3,.app-v8 .nav-rail h4,.app-v8 .nav-rail p,.app-v8 .nav-rail label,.app-v8 .nav-rail small,.app-v8 .nav-rail span,.app-v8 .nav-rail strong,.app-v8 .nav-rail b,.app-v8 .nav-rail .rail-item,.app-v8 .nav-rail .rail-footer { color:var(--theme-white)!important; }
+.app-v8 .nav-rail .rail-label,.app-v8 .nav-rail .rail-icon,.app-v8 .nav-rail .rail-version { color:var(--theme-action)!important; }
+.app-v8 .nav-rail .rail-item.active,.app-v8 .nav-rail .rail-item.active * { color:var(--theme-black)!important; }
+.app-v8 .intel-command-banner p,.app-v8 .intel-command-banner span,.app-v8 .ops-v8-command-head p,.app-v8 .ops-v8-command-head span { color:var(--theme-muted-light)!important; }
+.app-v8 .empty-state,.app-v8 .empty-state *,.app-v8 .inactive,.app-v8 .offline { color:var(--theme-neutral)!important; }
+
+/* Estado: verde/vermelho não decoram componentes neutros */
+.app-v8 .badge.entregue,.app-v8 .badge.success,.app-v8 .status-success,.app-v8 .state-ok { background:var(--theme-green-bg)!important;color:var(--theme-green-text)!important;border:2px solid var(--theme-green)!important; }
+.app-v8 .badge.problema,.app-v8 .badge.error,.app-v8 .status-error,.app-v8 .state-error { background:var(--theme-red-bg)!important;color:var(--theme-red-text)!important;border:2px solid var(--theme-red)!important; }
+.app-v8 .conn-dot.online,.app-v8 .status-online,.app-v8 .live-dot { background:var(--theme-green)!important; }
+.app-v8 .error,.app-v8 .field-error,.app-v8 .form-error { color:var(--theme-red-text)!important; }
+.app-v8 #supportBtn,.app-v8 .support-button,.app-v8 .support-fab,.app-v8 .btn-support,.app-v8 [data-support] { background:var(--theme-green)!important;color:var(--theme-black)!important;border:3px solid var(--theme-black)!important; }
