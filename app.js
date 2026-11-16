@@ -1,6 +1,6 @@
-import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=8.5';
-import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=8.5';
-import * as V from './views.js?v=8.5';
+import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=8.6';
+import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=8.6';
+import * as V from './views.js?v=8.6';
 
 let currentView = 'central';
 let currentRegistryTab = 'vehicles';
@@ -100,6 +100,11 @@ function openNavigationDrawer() {
   const sidebar = $('#sidebar');
   const menu = $('#menuBtn');
   const backdrop = $('#sidebarBackdrop');
+  // O botão de três linhas também reabre o menu depois do recolhimento total.
+  if (localStorage.getItem('orbita_sidebar_collapsed') === '1') {
+    localStorage.setItem('orbita_sidebar_collapsed', '0');
+    applySidebarState();
+  }
   sidebar?.classList.add('open');
   backdrop?.classList.add('active');
   menu?.setAttribute('aria-expanded', 'true');
@@ -432,7 +437,7 @@ async function render() {
 }
 
 async function updateBadges() {
-  const { Deliveries, Cycles } = await import('./db.js?v=8.5');
+  const { Deliveries, Cycles } = await import('./db.js?v=8.6');
   const rows = await Deliveries.active(environment);
   $('#pendingBadge').textContent = rows.filter((r) => r.status === 'na_loja').length;
   const trashed = await Deliveries.trashed(environment);
@@ -455,7 +460,7 @@ if ('serviceWorker' in navigator) {
     refreshingForUpdate = true;
     window.location.reload();
   });
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v8.5-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v8.6-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
 }
 
 boot();
