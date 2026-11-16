@@ -1,6 +1,6 @@
-import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=13.8';
-import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=13.8';
-import * as V from './views.js?v=13.8';
+import { ensureSeed, saveAutoBackup, enableWriteThroughAutoBackup } from './db.js?v=13.9';
+import { $, $$, toast, initTooltips, animateStatCards, performanceProfile } from './helpers.js?v=13.9';
+import * as V from './views.js?v=13.9';
 
 let currentView = 'central';
 let currentRegistryTab = 'vehicles';
@@ -111,6 +111,17 @@ function openNavigationDrawer() {
   menu?.setAttribute('aria-label', 'Fechar menu');
 }
 
+function toggleSidebarFromHeader() {
+  const isMobile = window.matchMedia('(max-width: 900px)').matches;
+  if (isMobile) {
+    $('#sidebar')?.classList.contains('open') ? closeNavigationDrawer() : openNavigationDrawer();
+    return;
+  }
+  const collapsed = localStorage.getItem('orbita_sidebar_collapsed') === '1';
+  localStorage.setItem('orbita_sidebar_collapsed', collapsed ? '0' : '1');
+  applySidebarState();
+}
+
 function startLiveClock() {
   const el = $('#liveClockText');
   const tick = () => { if (el) el.textContent = new Date().toLocaleTimeString('pt-BR'); };
@@ -159,9 +170,7 @@ function wireNav() {
       render();
     });
   });
-  $('#menuBtn').addEventListener('click', () => {
-    $('#sidebar')?.classList.contains('open') ? closeNavigationDrawer() : openNavigationDrawer();
-  });
+  $('#menuBtn').addEventListener('click', toggleSidebarFromHeader);
   $('#sidebarCollapseBtn')?.addEventListener('click', () => {
     const collapsed = localStorage.getItem('orbita_sidebar_collapsed') !== '1';
     // O estado recolhido é diferente da gaveta aberta: nunca mantenha ambos juntos.
@@ -439,7 +448,7 @@ async function render() {
 }
 
 async function updateBadges() {
-  const { Deliveries, Cycles } = await import('./db.js?v=13.8');
+  const { Deliveries, Cycles } = await import('./db.js?v=13.9');
   const rows = await Deliveries.active(environment);
   $('#pendingBadge').textContent = rows.filter((r) => r.status === 'na_loja').length;
   const trashed = await Deliveries.trashed(environment);
@@ -462,7 +471,7 @@ if ('serviceWorker' in navigator) {
     refreshingForUpdate = true;
     window.location.reload();
   });
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v13.8-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?build=20261114-v13.9-saneamento', { updateViaCache: 'none' }).then((registration) => registration.update()).catch(() => {}));
 }
 
 boot();

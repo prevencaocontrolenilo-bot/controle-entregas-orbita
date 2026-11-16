@@ -5505,3 +5505,65 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
 .app-v8 #modalWrap:has(#deliveryForm) #deliveryForm .hidden { display:none!important; }
 .app-v8 #modalWrap:has(#deliveryForm) .modal-actions { padding:16px 26px 22px!important;background:var(--theme-page)!important;border-top:2px solid var(--theme-black)!important;gap:10px!important; }
 @media(max-width:640px){.app-v8 #modalWrap:has(#deliveryForm) .modal-head,.app-v8 #modalWrap:has(#deliveryForm) .modal-body,.app-v8 #modalWrap:has(#deliveryForm) .modal-actions{padding-left:16px!important;padding-right:16px!important}.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm{grid-template-columns:1fr!important}.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>label,.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.field-row{grid-column:1/-1!important}.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.field-row{grid-template-columns:1fr!important}.app-v8 #modalWrap:has(#deliveryForm) #deliveryForm>.delivery-number-preview-card{display:grid!important;gap:10px!important}.app-v8 #modalWrap:has(#deliveryForm) .modal-head h2{font-size:20px!important}}
+
+
+/* v13.9 — refinamento visual solicitado: listras, menu, bordas e cartões independentes */
+/* 1. Pulso da operação: amarelo listrado sutil, sem degradê. */
+.app-v8 #opsScoreConsole,
+.app-v8 .ops-v8-score,
+.app-v8 .ops-pulse-console { background:#ffee00!important;background-image:repeating-linear-gradient(135deg,#ffee00 0 16px,#f5e400 16px 32px)!important;color:#111111!important;border:2px solid #111111!important;box-shadow:none!important; }
+.app-v8 #opsScoreConsole h1,.app-v8 #opsScoreConsole h2,.app-v8 #opsScoreConsole h3,
+.app-v8 #opsScoreConsole p,.app-v8 #opsScoreConsole span,.app-v8 #opsScoreConsole b,
+.app-v8 #opsScoreConsole strong,.app-v8 #opsScoreConsole small { color:#111111!important; }
+.app-v8 #opsScoreConsole .ops-v8-score-ring { border-color:#111111!important;background:#ffee00!important;color:#111111!important; }
+.app-v8 #opsScoreConsole .ops-v8-score-ring * { color:#111111!important; }
+/* 2. Menu ativo: uma única faixa amarela, sem caixa atrás do rótulo/ícone. */
+.app-v8 .rail-item.active,
+.app-v8 .rail-item.active:hover,
+.app-v8 .rail-item.active:focus,
+.app-v8 .rail-item.active:focus-visible,
+.app-v8 .rail-item.active:active,
+.app-v8 .nav-rail .rail-item.active { background:#ffee00!important;background-image:none!important;color:#111111!important;border:0!important;border-radius:0!important;box-shadow:none!important;text-shadow:none!important;opacity:1!important;mix-blend-mode:normal!important; }
+.app-v8 .rail-item.active>span,
+.app-v8 .rail-item.active>label,
+.app-v8 .rail-item.active>.rail-icon,
+.app-v8 .rail-item.active>em,
+.app-v8 .rail-item.active * { background:transparent!important;background-image:none!important;color:#111111!important;box-shadow:none!important;text-shadow:none!important;opacity:1!important;mix-blend-mode:normal!important; }
+.app-v8 .rail-item:not(.active) { border:0!important; }
+.app-v8 .rail-nav .rail-label,.app-v8 .rail-footer,.app-v8 .rail-brand { border-top:0!important;border-bottom:0!important; }
+/* 3. Botão de recolher removido visualmente; o botão ☰ é o único controle. */
+.app-v8 #sidebarCollapseBtn,.app-v8 .rail-toggle { display:none!important; }
+.app-v8 #menuBtn,.app-v8 .header-menu { width:48px!important;height:48px!important;min-width:48px!important;background:#ffffff!important;color:#111111!important;border:2px solid #111111!important;border-radius:10px!important;box-shadow:3px 3px 0 #111111!important; }
+.app-v8 #menuBtn:hover,.app-v8 #menuBtn:focus-visible,.app-v8 .header-menu:hover,.app-v8 .header-menu:focus-visible { background:#ffee00!important;color:#111111!important;border-color:#111111!important; }
+/* 4. Uma borda por bloco; tabelas de auditoria sem frestas ou linhas internas. */
+.app-v8 .card,.app-v8 .chart-card,.app-v8 .ranking-panel,.app-v8 .driver-table-panel,
+.app-v8 .intel-metric,.app-v8 .intel-hero>article,.app-v8 .decision-brief,
+.app-v8 .report-card,.app-v8 .settings-card,.app-v8 .registry-workbench,
+.app-v8 .form-section,.app-v8 .dashboard-filter-bar,.app-v8 .dashboard-scope,
+.app-v8 .ops-panel,.app-v8 .ops-flow-console,.app-v8 .ops-finance-console,
+.app-v8 .ops-v8-quick-actions,.app-v8 .ops-v8-live-panel,.app-v8 .ops-v8-priority-panel,
+.app-v8 .ops-v8-queue-block,.app-v8 .ops-v8-cycle-panel,.app-v8 .ops-v8-capacity,
+.app-v8 .page-table-card { border:2px solid #111111!important; }
+.app-v8 .page-table-card { overflow:hidden!important;background:#ffffff!important;border-radius:16px!important;box-shadow:4px 4px 0 #111111!important; }
+.app-v8 .page-table-card .table-card-heading { border:0!important;border-radius:0!important;margin:0!important; }
+.app-v8 .page-table-card .table-wrap { border:0!important;border-radius:0!important;box-shadow:none!important;overflow-x:auto!important; }
+.app-v8 .page-table-card table { border:0!important;border-collapse:collapse!important; }
+.app-v8 .page-table-card table thead th { background:#111111!important;color:#ffee00!important;border:0!important;border-bottom:0!important; }
+.app-v8 .page-table-card table tbody tr { border:0!important; }
+.app-v8 .page-table-card table tbody td { border:0!important;border-bottom:0!important;color:#111111!important; }
+.app-v8 .page-table-card table tbody tr:nth-child(even) { background:#fffbe0!important; }
+.app-v8 .page-table-card table tbody tr:nth-child(odd) { background:#ffffff!important; }
+/* 5. Previsões: quatro cards independentes, sem moldura externa nem divisórias internas. */
+.app-v8 .forecast-strip { display:grid!important;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))!important;gap:16px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important; }
+.app-v8 .forecast-strip>article { min-width:0!important;min-height:132px!important;padding:18px!important;background:#ffffff!important;border:2px solid #111111!important;border-radius:16px!important;box-shadow:4px 4px 0 #111111!important; }
+.app-v8 .forecast-strip>article span { color:#4b5563!important;font-size:12px!important; }
+.app-v8 .forecast-strip>article strong { color:#111111!important;font-family:var(--font-display)!important;font-size:36px!important;line-height:1.05!important; }
+.app-v8 .forecast-strip>article small { color:#4b5563!important;font-size:12px!important; }
+/* 6. Ações rápidas: cada número é uma etiqueta amarela com texto preto. */
+.app-v8 .ops-v8-quick-grid button b,
+.app-v8 .ops-v8-quick-grid button .quick-number { display:inline-grid!important;place-items:center!important;width:max-content!important;min-width:30px!important;height:24px!important;padding:0 7px!important;background:#ffee00!important;color:#111111!important;border:2px solid #111111!important;border-radius:7px!important; }
+.app-v8 .ops-v8-quick-grid button:hover b,.app-v8 .ops-v8-quick-grid button:focus-visible b,
+.app-v8 .ops-v8-quick-grid button:hover .quick-number,.app-v8 .ops-v8-quick-grid button:focus-visible .quick-number { background:#ffee00!important;color:#111111!important; }
+/* Suporte: verde, sem corte na lateral. */
+.app-v8 #supportBtn,.app-v8 .support-button,.app-v8 .support-fab,.app-v8 .btn-support,.app-v8 [data-support] { background:#16a34a!important;color:#111111!important;border:3px solid #111111!important;box-shadow:3px 3px 0 #111111!important;right:18px!important;bottom:18px!important;max-width:calc(100vw - 36px)!important;box-sizing:border-box!important; }
+@media(max-width:620px){.app-v8 .forecast-strip{grid-template-columns:1fr!important;gap:14px!important}.app-v8 .forecast-strip>article{min-height:112px!important}.app-v8 #supportBtn,.app-v8 .support-button,.app-v8 .support-fab,.app-v8 .btn-support,.app-v8 [data-support]{right:12px!important;bottom:12px!important;}}
