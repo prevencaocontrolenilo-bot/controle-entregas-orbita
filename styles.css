@@ -5435,3 +5435,28 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
 .app-v8 .forecast-strip>article span { color:var(--theme-gray)!important;font-weight:800!important; }
 .app-v8 .forecast-strip>article strong { color:var(--theme-black)!important;font-family:var(--font-display)!important; }
 .app-v8 .forecast-strip>article small { color:var(--theme-gray)!important; }
+
+
+/* v13.6 — correção global dos contrastes encontrados na varredura */
+/* Acesso rápido: os números ficam pretos sobre a faixa amarela. */
+.app-v8 .quick-nav .quick-item b,
+.app-v8 .quick-nav .quick-item.active b { color:#111111!important; }
+/* Sinais da Inteligência: texto preto sobre cards brancos. */
+.app-v8 #view .intel-command-signals article,
+.app-v8 #view .intel-command-signals article>* { color:#111111!important; }
+.app-v8 #view .intel-command-signals article small { color:#4b5563!important; }
+/* Previsões: nenhuma legenda amarela sobre amarelo-suave. */
+.app-v8 #view .forecast-strip article,
+.app-v8 #view .forecast-strip article>* { color:#111111!important; }
+.app-v8 #view .forecast-strip article span,
+.app-v8 #view .forecast-strip article small { color:#4b5563!important; }
+/* Tabelas: cabeçalho preto com texto amarelo, sem herança preta. */
+.app-v8 #view table thead th,
+.app-v8 #view .table-wrap thead th,
+.app-v8 #view .page-table-card thead th { background:#111111!important;color:#ffee00!important;border-color:#111111!important; }
+/* Ícones e controles em superfícies escuras. */
+.app-v8 #view [class*="command"] svg,
+.app-v8 #view [class*="console"] svg,
+.app-v8 #view [class*="panel"] svg { color:#ffee00!important;stroke:#ffee00!important; }
+.app-v8 #view .km-active-table .btn-ghost,
+.app-v8 #view .km-active-table .btn-small { background:#ffffff!important;color:#111111!important;border-color:#111111!important; }
