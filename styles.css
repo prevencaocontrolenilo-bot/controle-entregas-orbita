@@ -5408,3 +5408,16 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
 .app-v8 .decision-brief header strong,
 .app-v8 .decision-brief button strong,
 .app-v8 .decision-brief button span { color:var(--theme-black)!important; }
+
+
+/* v13.4 — contraste dos filtros e cards de Relatórios */
+.app-v8 .report-period-card { background-color:var(--theme-black)!important;background-image:repeating-linear-gradient(135deg,var(--theme-black) 0 16px,var(--theme-stripe) 16px 32px)!important;color:var(--theme-white)!important;border:2px solid var(--theme-black)!important;box-shadow:6px 6px 0 var(--theme-action)!important; }
+.app-v8 .report-period-card>div span { color:var(--theme-action)!important; }
+.app-v8 .report-period-card>div strong { color:var(--theme-white)!important; }
+.app-v8 .report-period-card label { color:var(--theme-muted-light)!important; }
+.app-v8 .report-period-card input { background:var(--theme-white)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important;color-scheme:light!important; }
+.app-v8 .report-period-card .btn-ghost { background:var(--theme-white)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important; }
+.app-v8 .report-period-card .btn-ghost:hover { background:var(--theme-action)!important;color:var(--theme-black)!important; }
+.app-v8 .report-choice-grid .stat-card { background:var(--theme-white)!important;color:var(--theme-black)!important;border:2px solid var(--theme-black)!important;box-shadow:4px 4px 0 var(--theme-black)!important; }
+.app-v8 .report-choice-grid .stat-card small,.app-v8 .report-choice-grid .stat-card p { color:var(--theme-gray)!important; }
+.app-v8 .report-choice-grid .stat-card button { color:var(--theme-black)!important; }
