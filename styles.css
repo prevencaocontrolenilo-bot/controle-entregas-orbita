@@ -4867,3 +4867,150 @@ input:focus, select:focus, textarea:focus { border-color: var(--blue) !important
 .app-v8 .chart-axis-line { stroke: #000000 !important; }
 .app-v8 .chart-axis-label,
 .app-v8 .chart-value-label { fill: #000000 !important; }
+
+/* v11.0 — sistema visual equilibrado: contraste, hierarquia e legibilidade */
+.app-v8 {
+  --theme-black: #000000;
+  --theme-yellow: #FFC002;
+  --theme-cream: #FEF3E6;
+  --theme-panel: #FFF9EE;
+  --theme-line: #E3C98D;
+  --theme-muted: #665844;
+  --v8-navy: #000000 !important;
+  --v8-blue: #000000 !important;
+  --v8-cyan: #FFC002 !important;
+  --v8-bg: #FEF3E6 !important;
+  --v8-line: #E3C98D !important;
+  --v8-muted: #665844 !important;
+  --v8-ink: #000000 !important;
+  --paper: #FEF3E6 !important;
+  --card: #FFF9EE !important;
+  background: #FEF3E6 !important;
+  color: #000000 !important;
+}
+.app-v8 .app-main,
+.app-v8 .workspace-view,
+.app-v8 .view { background: #FEF3E6 !important; color: #000000 !important; }
+.app-v8 .app-header,
+.app-v8 .header-line,
+.app-v8 .quick-nav,
+.app-v8 .knowledge-bar { background: #FEF3E6 !important; color: #000000 !important; border-color: #E3C98D !important; }
+.app-v8 .nav-rail,
+.app-v8 .rail-brand,
+.app-v8 .rail-status,
+.app-v8 .rail-footer { background: #000000 !important; color: #FFFFFF !important; }
+.app-v8 .rail-item { color: #FFF9EE !important; }
+.app-v8 .rail-item:hover { background: #211b12 !important; border-color: #FFC002 !important; }
+.app-v8 .rail-item.active { background: #FFC002 !important; color: #000000 !important; border-color: #FFC002 !important; box-shadow: 0 8px 18px rgba(255,192,2,.24) !important; }
+.app-v8 .rail-item.active * { color: #000000 !important; }
+.app-v8 .rail-icon { color: #FFC002 !important; }
+.app-v8 .rail-label { color: #FFC002 !important; }
+.app-v8 .rail-footer strong { color: #FFF9EE !important; }
+.app-v8 .rail-footer small,
+.app-v8 .connection-state,
+.app-v8 .station-chip { color: #CDBD9F !important; }
+.app-v8 .header-context h1,
+.app-v8 .header-context p,
+.app-v8 .quick-item,
+.app-v8 .quick-label,
+.app-v8 .knowledge-heading strong,
+.app-v8 .knowledge-heading small,
+.app-v8 .knowledge-card,
+.app-v8 .knowledge-card > strong,
+.app-v8 .knowledge-card .nq-helper,
+.app-v8 .eyebrow { color: #000000 !important; }
+.app-v8 .quick-item:hover,
+.app-v8 .quick-item.active,
+.app-v8 .quick-item b,
+.app-v8 .quick-all,
+.app-v8 .knowledge-card .nq-category,
+.app-v8 .knowledge-card .knowledge-open { color: #000000 !important; }
+.app-v8 .quick-item.active,
+.app-v8 .header-create,
+.app-v8 .btn-primary,
+.app-v8 .dashboard-period-btn.active,
+.app-v8 .dashboard-scope button.active { background: #FFC002 !important; border-color: #FFC002 !important; color: #000000 !important; }
+.app-v8 .quick-all,
+.app-v8 .clock-chip,
+.app-v8 .version-chip,
+.app-v8 .header-menu { background: #FFF9EE !important; color: #000000 !important; border-color: #E3C98D !important; }
+.app-v8 .knowledge-card,
+.app-v8 .dashboard-filter-bar,
+.app-v8 .dashboard-scope,
+.app-v8 .card,
+.app-v8 .chart-card,
+.app-v8 .ranking-panel,
+.app-v8 .driver-table-panel,
+.app-v8 .intel-metric,
+.app-v8 .intel-hero > article,
+.app-v8 .decision-brief,
+.app-v8 .forecast-strip,
+.app-v8 .report-card,
+.app-v8 .settings-card,
+.app-v8 .table-wrap,
+.app-v8 .registry-workbench,
+.app-v8 .ops-panel,
+.app-v8 .ops-score-console,
+.app-v8 .ops-flow-console,
+.app-v8 .ops-pulse-console,
+.app-v8 .ops-finance-console,
+.app-v8 .form-section,
+.app-v8 .modal { background: #FFF9EE !important; color: #000000 !important; border-color: #E3C98D !important; }
+.app-v8 h1,
+.app-v8 h2,
+.app-v8 h3,
+.app-v8 h4,
+.app-v8 p,
+.app-v8 label,
+.app-v8 td,
+.app-v8 th,
+.app-v8 .intel-metric,
+.app-v8 .intel-metric small,
+.app-v8 .intel-metric span,
+.app-v8 .chart-title,
+.app-v8 .chart-title small,
+.app-v8 .ranking-line,
+.app-v8 .section-heading,
+.app-v8 .intel-section-head,
+.app-v8 .intel-section-head small { color: #000000 !important; }
+.app-v8 .intel-metric,
+.app-v8 .stat-card { border-top-color: #FFC002 !important; }
+.app-v8 .intel-command-banner,
+.app-v8 .ops-v8-command-head { background: #000000 !important; border-color: #000000 !important; color: #FFFFFF !important; }
+.app-v8 .intel-command-banner h2,
+.app-v8 .intel-command-banner p,
+.app-v8 .intel-command-banner span,
+.app-v8 .intel-command-banner small,
+.app-v8 .intel-command-banner strong,
+.app-v8 .ops-v8-command-head h2,
+.app-v8 .ops-v8-command-head p,
+.app-v8 .ops-v8-command-head span,
+.app-v8 .ops-v8-command-head small,
+.app-v8 .ops-v8-command-head strong { color: #FFFFFF !important; }
+.app-v8 .intel-command-signals article { background: rgba(255,192,2,.14) !important; border-color: rgba(255,192,2,.45) !important; }
+.app-v8 .intel-command-signals article strong { color: #FFC002 !important; }
+.app-v8 .intel-score { background: #FFC002 !important; border-color: #FFC002 !important; color: #000000 !important; }
+.app-v8 .intel-score * { color: #000000 !important; }
+.app-v8 input,
+.app-v8 select,
+.app-v8 textarea { background: #FFF9EE !important; color: #000000 !important; border-color: #D7B96F !important; }
+.app-v8 .btn-ghost,
+.app-v8 .btn-small { background: #FFF9EE !important; color: #000000 !important; border-color: #D7B96F !important; }
+.app-v8 .btn-ghost:hover { background: #FFC002 !important; border-color: #FFC002 !important; color: #000000 !important; }
+.app-v8 .table-wrap th,
+.app-v8 th { background: #FFC002 !important; color: #000000 !important; border-color: #D7B96F !important; }
+.app-v8 td { color: #000000 !important; border-color: #E3C98D !important; }
+.app-v8 .modal-head,
+.app-v8 .modal-actions { border-color: #E3C98D !important; }
+.app-v8 .modal-close { background: #FFC002 !important; color: #000000 !important; }
+.app-v8 .toast,
+.app-v8 .toast * { background: #000000 !important; color: #FFFFFF !important; }
+.app-v8 .score-ring strong,
+.app-v8 .score-ring small { color: #000000 !important; }
+.app-v8 .chart-grid-line,
+.app-v8 .chart-axis-line { stroke: #B28A25 !important; }
+.app-v8 .chart-axis-label,
+.app-v8 .chart-value-label { fill: #000000 !important; }
+.app-v8 .conn-dot.online,
+.app-v8 .pulse-dot,
+.app-v8 .command-pulse { background: #FFC002 !important; box-shadow: 0 0 0 4px rgba(255,192,2,.18) !important; }
